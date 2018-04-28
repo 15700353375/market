@@ -10,11 +10,16 @@
     <div class="displayNone">{{AllData}}</div>
     <div class="little_top mg_t20">
         <div class="top_main">
-            <div class="color_gray littles ">
+            <div class="color_gray littles mg_b20">
                 <span>加密货币 • 比特币</span>
                 <button class="float_right btn btn-default ch_btn_green" @click='follow'>关注BTCUSD</button>
             </div>
-            <div class="font_strong bitTitle">比特币/美元 <span>BTCUSD</span></div>
+            <div class="color_gray littles ">
+                <div class="font_strong bitTitle">比特币/美元 <span>BTCUSD</span></div>
+                <button v-if='!updata_flag' class="float_right btn btn-default ch_btn_green" @click='updata'>定时刷新</button>
+                <button v-else class="float_right btn btn-default ch_btn_green" @click='updata'>取消定时</button>
+            </div>
+            
         </div>
     </div>
 
@@ -184,16 +189,22 @@ import LittleCharts from '@Components/LittleCharts';
             sortBy: 'market_cap_calc',
             sortOrder: 'desc',
             right: 'USD$',
-            keyword: ''
+            keyword: '',
+            name: '',
         },
 
+        // 定时更新
+        updata_flag: false,
 
+        //该变量的作用，弹窗做了某些操作，作为计算属性重新触发请求，更新数据
+        refresh: false,
+        timer2: null,
 
       }
     },
     mounted(){
 
-
+        
         // 默认当前头部为第一个
     },
     computed:{
@@ -203,7 +214,9 @@ import LittleCharts from '@Components/LittleCharts';
                 this.list.type = Number(state.common.listStatus);
                 this.list.right = state.common.right;
                 this.list.keyword = state.common.keywords;
-                // console.log(this.list.type)
+                this.list.name = state.common.listName;
+                // debugger
+                console.log(this.list.type)
             },
 
             user: state => state.login.userInfo,
@@ -214,7 +227,7 @@ import LittleCharts from '@Components/LittleCharts';
             let param = {
                 timer: this.timer
             };
-
+            let refresh = this.refresh; 
             this.getList(param);
         }
     },
@@ -247,6 +260,19 @@ import LittleCharts from '@Components/LittleCharts';
 
         },
 
+        // 定时刷新
+        updata(){
+            this.updata_flag = !this.updata_flag;
+            
+            if(this.updata_flag){
+                this.timer2 = setInterval(()=>{
+                    this.refresh = !this.refresh;
+                },5000)
+            }else{
+                clearInterval(this.timer2)
+            }
+        },
+
 
         // 获取列表数据
         getList(parmas){
@@ -255,7 +281,8 @@ import LittleCharts from '@Components/LittleCharts';
                 parmas.timer = '';
             }
             // 请求数据
-            let datas = this.buildData(parmas.timer);
+            let datas = this.buildData(this.list.name,parmas.timer);
+            
             console.log(datas)
             
             let staffPromsie = this.$ajaxPost('https://scanner.tradingview.com/crypto/scan', datas);
@@ -560,12 +587,12 @@ import LittleCharts from '@Components/LittleCharts';
         },
 
         // 处理传入数据的方法 --时间
-        buildData(type) {
+        buildData(name, type) {
             
             if(!type){
-                var html = '{"symbols":{"tickers":["BITFINEX:XRPUSD"],"query":{"types":[]}},"columns":["Recommend.Other'+ type +'","Recommend.All'+ type +'","Recommend.MA'+ type +'","RSI'+ type +'","RSI[1]'+ type +'","Stoch.K'+ type +'","Stoch.D'+ type +'","Stoch.K[1]'+ type +'","Stoch.D[1]'+ type +'","CCI20'+ type +'","CCI20[1]'+ type +'","ADX'+ type +'","ADX+DI'+ type +'","ADX-DI'+ type +'","ADX+DI[1]'+ type +'","ADX-DI[1]'+ type +'","AO'+ type +'","AO[1]'+ type +'","Mom'+ type +'","Mom[1]'+ type +'","MACD.macd'+ type +'","MACD.signal'+ type +'","Rec.Stoch.RSI'+ type +'","Stoch.RSI.K'+ type +'","Rec.WR'+ type +'","W.R'+ type +'","Rec.BBPower'+ type +'","BBPower'+ type +'","Rec.UO'+ type +'","UO'+ type +'","EMA10'+ type +'","close'+ type +'","SMA10'+ type +'","EMA20'+ type +'","SMA20'+ type +'","EMA30'+ type +'","SMA30'+ type +'","EMA50'+ type +'","SMA50'+ type +'","EMA100'+ type +'","SMA100'+ type +'","EMA200'+ type +'","SMA200'+ type +'","Rec.Ichimoku'+ type +'","Ichimoku.BLine'+ type +'","Rec.VWMA'+ type +'","VWMA'+ type +'","Rec.HullMA9'+ type +'","HullMA9'+ type +'","Pivot.M.Classic.S3'+ type +'","Pivot.M.Classic.S2'+ type +'","Pivot.M.Classic.S1'+ type +'","Pivot.M.Classic.Middle'+ type +'","Pivot.M.Classic.R1'+ type +'","Pivot.M.Classic.R2'+ type +'","Pivot.M.Classic.R3'+ type +'","Pivot.M.Fibonacci.S3'+ type +'","Pivot.M.Fibonacci.S2'+ type +'","Pivot.M.Fibonacci.S1'+ type +'","Pivot.M.Fibonacci.Middle'+ type +'","Pivot.M.Fibonacci.R1'+ type +'","Pivot.M.Fibonacci.R2'+ type +'","Pivot.M.Fibonacci.R3'+ type +'","Pivot.M.Camarilla.S3'+ type +'","Pivot.M.Camarilla.S2'+ type +'","Pivot.M.Camarilla.S1'+ type +'","Pivot.M.Camarilla.Middle'+ type +'","Pivot.M.Camarilla.R1'+ type +'","Pivot.M.Camarilla.R2'+ type +'","Pivot.M.Camarilla.R3'+ type +'","Pivot.M.Woodie.S3'+ type +'","Pivot.M.Woodie.S2'+ type +'","Pivot.M.Woodie.S1'+ type +'","Pivot.M.Woodie.Middle'+ type +'","Pivot.M.Woodie.R1'+ type +'","Pivot.M.Woodie.R2'+ type +'","Pivot.M.Woodie.R3'+ type +'","Pivot.M.Demark.S1'+ type +'","Pivot.M.Demark.Middle'+ type +'","Pivot.M.Demark.R1'+ type +'"]}';
+                var html = '{"symbols":{"tickers":["'+  name + '"],"query":{"types":[]}},"columns":["Recommend.Other'+ type +'","Recommend.All'+ type +'","Recommend.MA'+ type +'","RSI'+ type +'","RSI[1]'+ type +'","Stoch.K'+ type +'","Stoch.D'+ type +'","Stoch.K[1]'+ type +'","Stoch.D[1]'+ type +'","CCI20'+ type +'","CCI20[1]'+ type +'","ADX'+ type +'","ADX+DI'+ type +'","ADX-DI'+ type +'","ADX+DI[1]'+ type +'","ADX-DI[1]'+ type +'","AO'+ type +'","AO[1]'+ type +'","Mom'+ type +'","Mom[1]'+ type +'","MACD.macd'+ type +'","MACD.signal'+ type +'","Rec.Stoch.RSI'+ type +'","Stoch.RSI.K'+ type +'","Rec.WR'+ type +'","W.R'+ type +'","Rec.BBPower'+ type +'","BBPower'+ type +'","Rec.UO'+ type +'","UO'+ type +'","EMA10'+ type +'","close'+ type +'","SMA10'+ type +'","EMA20'+ type +'","SMA20'+ type +'","EMA30'+ type +'","SMA30'+ type +'","EMA50'+ type +'","SMA50'+ type +'","EMA100'+ type +'","SMA100'+ type +'","EMA200'+ type +'","SMA200'+ type +'","Rec.Ichimoku'+ type +'","Ichimoku.BLine'+ type +'","Rec.VWMA'+ type +'","VWMA'+ type +'","Rec.HullMA9'+ type +'","HullMA9'+ type +'","Pivot.M.Classic.S3'+ type +'","Pivot.M.Classic.S2'+ type +'","Pivot.M.Classic.S1'+ type +'","Pivot.M.Classic.Middle'+ type +'","Pivot.M.Classic.R1'+ type +'","Pivot.M.Classic.R2'+ type +'","Pivot.M.Classic.R3'+ type +'","Pivot.M.Fibonacci.S3'+ type +'","Pivot.M.Fibonacci.S2'+ type +'","Pivot.M.Fibonacci.S1'+ type +'","Pivot.M.Fibonacci.Middle'+ type +'","Pivot.M.Fibonacci.R1'+ type +'","Pivot.M.Fibonacci.R2'+ type +'","Pivot.M.Fibonacci.R3'+ type +'","Pivot.M.Camarilla.S3'+ type +'","Pivot.M.Camarilla.S2'+ type +'","Pivot.M.Camarilla.S1'+ type +'","Pivot.M.Camarilla.Middle'+ type +'","Pivot.M.Camarilla.R1'+ type +'","Pivot.M.Camarilla.R2'+ type +'","Pivot.M.Camarilla.R3'+ type +'","Pivot.M.Woodie.S3'+ type +'","Pivot.M.Woodie.S2'+ type +'","Pivot.M.Woodie.S1'+ type +'","Pivot.M.Woodie.Middle'+ type +'","Pivot.M.Woodie.R1'+ type +'","Pivot.M.Woodie.R2'+ type +'","Pivot.M.Woodie.R3'+ type +'","Pivot.M.Demark.S1'+ type +'","Pivot.M.Demark.Middle'+ type +'","Pivot.M.Demark.R1'+ type +'"]}';
             }else{
-                var html = '{"symbols":{"tickers":["BITFINEX:XRPUSD"],"query":{"types":[]}},"columns":["Recommend.Other|'+ type +'","Recommend.All|'+ type +'","Recommend.MA|'+ type +'","RSI|'+ type +'","RSI[1]|'+ type +'","Stoch.K|'+ type +'","Stoch.D|'+ type +'","Stoch.K[1]|'+ type +'","Stoch.D[1]|'+ type +'","CCI20|'+ type +'","CCI20[1]|'+ type +'","ADX|'+ type +'","ADX+DI|'+ type +'","ADX-DI|'+ type +'","ADX+DI[1]|'+ type +'","ADX-DI[1]|'+ type +'","AO|'+ type +'","AO[1]|'+ type +'","Mom|'+ type +'","Mom[1]|'+ type +'","MACD.macd|'+ type +'","MACD.signal|'+ type +'","Rec.Stoch.RSI|'+ type +'","Stoch.RSI.K|'+ type +'","Rec.WR|'+ type +'","W.R|'+ type +'","Rec.BBPower|'+ type +'","BBPower|'+ type +'","Rec.UO|'+ type +'","UO|'+ type +'","EMA10|'+ type +'","close|'+ type +'","SMA10|'+ type +'","EMA20|'+ type +'","SMA20|'+ type +'","EMA30|'+ type +'","SMA30|'+ type +'","EMA50|'+ type +'","SMA50|'+ type +'","EMA100|'+ type +'","SMA100|'+ type +'","EMA200|'+ type +'","SMA200|'+ type +'","Rec.Ichimoku|'+ type +'","Ichimoku.BLine|'+ type +'","Rec.VWMA|'+ type +'","VWMA|'+ type +'","Rec.HullMA9|'+ type +'","HullMA9|'+ type +'","Pivot.M.Classic.S3|'+ type +'","Pivot.M.Classic.S2|'+ type +'","Pivot.M.Classic.S1|'+ type +'","Pivot.M.Classic.Middle|'+ type +'","Pivot.M.Classic.R1|'+ type +'","Pivot.M.Classic.R2|'+ type +'","Pivot.M.Classic.R3|'+ type +'","Pivot.M.Fibonacci.S3|'+ type +'","Pivot.M.Fibonacci.S2|'+ type +'","Pivot.M.Fibonacci.S1|'+ type +'","Pivot.M.Fibonacci.Middle|'+ type +'","Pivot.M.Fibonacci.R1|'+ type +'","Pivot.M.Fibonacci.R2|'+ type +'","Pivot.M.Fibonacci.R3|'+ type +'","Pivot.M.Camarilla.S3|'+ type +'","Pivot.M.Camarilla.S2|'+ type +'","Pivot.M.Camarilla.S1|'+ type +'","Pivot.M.Camarilla.Middle|'+ type +'","Pivot.M.Camarilla.R1|'+ type +'","Pivot.M.Camarilla.R2|'+ type +'","Pivot.M.Camarilla.R3|'+ type +'","Pivot.M.Woodie.S3|'+ type +'","Pivot.M.Woodie.S2|'+ type +'","Pivot.M.Woodie.S1|'+ type +'","Pivot.M.Woodie.Middle|'+ type +'","Pivot.M.Woodie.R1|'+ type +'","Pivot.M.Woodie.R2|'+ type +'","Pivot.M.Woodie.R3|'+ type +'","Pivot.M.Demark.S1|'+ type +'","Pivot.M.Demark.Middle|'+ type +'","Pivot.M.Demark.R1|'+ type +'"]}';
+                var html = '{"symbols":{"tickers":["'+  name + '"],"query":{"types":[]}},"columns":["Recommend.Other|'+ type +'","Recommend.All|'+ type +'","Recommend.MA|'+ type +'","RSI|'+ type +'","RSI[1]|'+ type +'","Stoch.K|'+ type +'","Stoch.D|'+ type +'","Stoch.K[1]|'+ type +'","Stoch.D[1]|'+ type +'","CCI20|'+ type +'","CCI20[1]|'+ type +'","ADX|'+ type +'","ADX+DI|'+ type +'","ADX-DI|'+ type +'","ADX+DI[1]|'+ type +'","ADX-DI[1]|'+ type +'","AO|'+ type +'","AO[1]|'+ type +'","Mom|'+ type +'","Mom[1]|'+ type +'","MACD.macd|'+ type +'","MACD.signal|'+ type +'","Rec.Stoch.RSI|'+ type +'","Stoch.RSI.K|'+ type +'","Rec.WR|'+ type +'","W.R|'+ type +'","Rec.BBPower|'+ type +'","BBPower|'+ type +'","Rec.UO|'+ type +'","UO|'+ type +'","EMA10|'+ type +'","close|'+ type +'","SMA10|'+ type +'","EMA20|'+ type +'","SMA20|'+ type +'","EMA30|'+ type +'","SMA30|'+ type +'","EMA50|'+ type +'","SMA50|'+ type +'","EMA100|'+ type +'","SMA100|'+ type +'","EMA200|'+ type +'","SMA200|'+ type +'","Rec.Ichimoku|'+ type +'","Ichimoku.BLine|'+ type +'","Rec.VWMA|'+ type +'","VWMA|'+ type +'","Rec.HullMA9|'+ type +'","HullMA9|'+ type +'","Pivot.M.Classic.S3|'+ type +'","Pivot.M.Classic.S2|'+ type +'","Pivot.M.Classic.S1|'+ type +'","Pivot.M.Classic.Middle|'+ type +'","Pivot.M.Classic.R1|'+ type +'","Pivot.M.Classic.R2|'+ type +'","Pivot.M.Classic.R3|'+ type +'","Pivot.M.Fibonacci.S3|'+ type +'","Pivot.M.Fibonacci.S2|'+ type +'","Pivot.M.Fibonacci.S1|'+ type +'","Pivot.M.Fibonacci.Middle|'+ type +'","Pivot.M.Fibonacci.R1|'+ type +'","Pivot.M.Fibonacci.R2|'+ type +'","Pivot.M.Fibonacci.R3|'+ type +'","Pivot.M.Camarilla.S3|'+ type +'","Pivot.M.Camarilla.S2|'+ type +'","Pivot.M.Camarilla.S1|'+ type +'","Pivot.M.Camarilla.Middle|'+ type +'","Pivot.M.Camarilla.R1|'+ type +'","Pivot.M.Camarilla.R2|'+ type +'","Pivot.M.Camarilla.R3|'+ type +'","Pivot.M.Woodie.S3|'+ type +'","Pivot.M.Woodie.S2|'+ type +'","Pivot.M.Woodie.S1|'+ type +'","Pivot.M.Woodie.Middle|'+ type +'","Pivot.M.Woodie.R1|'+ type +'","Pivot.M.Woodie.R2|'+ type +'","Pivot.M.Woodie.R3|'+ type +'","Pivot.M.Demark.S1|'+ type +'","Pivot.M.Demark.Middle|'+ type +'","Pivot.M.Demark.R1|'+ type +'"]}';
             }
 
             return html;

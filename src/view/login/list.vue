@@ -31,7 +31,7 @@
                 <tr v-for="itemParent in tableData">
                   <td class="text-left color_blue cur-p" >
                       <img :src="'/agentStatic/images/'+itemParent.d[0]+'.svg'" alt="">
-                      <span @click='goDetail'>{{itemParent.d[1]}}</span>
+                      <span @click='goDetail(itemParent.s)'>{{itemParent.d[1]}}</span>
                   </td>
                   <td class="text-right">{{itemParent.d[2]}}</td>
                   <td class="text-right">{{itemParent.d[3]}}</td>
@@ -231,7 +231,8 @@
 
 
         // 页面跳转
-        goDetail(){
+        goDetail(name){            
+            this.$store.commit('common/setListName', name);
             this.$router.push({name:'technicals'});
         },
 

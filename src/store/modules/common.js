@@ -10,7 +10,9 @@ const state = {
 
   right: 'USD$',
 
-  keywords: ''
+  keywords: '',
+
+  listName: '',
 };
 
 const getters = {};
@@ -30,6 +32,12 @@ const mutations = {
     
     // 变更状态
     state.keywords = keywords;
+  },
+
+  setListName(state,listName) {
+    
+    // 变更状态
+    state.listName = listName;
   },
 };
 
