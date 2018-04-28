@@ -4,7 +4,7 @@
  * @Description: 公共方法
  */
 
-// import _ from 'lodash';
+
 var n = new Object();
     n.NEUTRAL = '中立';
     n.BUY = '买入';
