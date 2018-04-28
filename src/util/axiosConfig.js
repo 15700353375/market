@@ -4,7 +4,7 @@
  * @Description: 请求路径
  */
 
-let base_url = '/agent/agent/web/';
+let base_url = 'http://bitcoin.xxw360.com/';
 
 if (process.env.NODE_ENV == 'production') {
   // 测试部使用的生产环境，上线时改为发布环境

@@ -103,6 +103,25 @@ export default {
       };
         sessionStorage.setItem('vuexData', JSON.stringify(vuexData));
     })
-  }
+  },
 
+  // 验证手机号
+  test_phone(value) {
+    return /^(13\d|14[57]|15[^4,\D]|17[03678]|18\d)\d{8}$/.test(value);
+  },
+  // 验证密码
+  test_password(value) {
+    
+    return /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/.test(value.toString());
+  },
+
+  // 产生随机数
+  //产生随机数函数
+  RndNum(n){
+    var rnd="";
+    for(var i=0;i<n;i++)
+        rnd+=Math.floor(Math.random()*10);
+    return rnd;
+  }
+  
 }

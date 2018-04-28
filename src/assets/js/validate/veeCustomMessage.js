@@ -9,6 +9,10 @@
 export let veeCustomMessage = {
   zh_CN: {
     custom: {
+      account: {
+        required: '该项为必填',
+        account: '请输入4到16位的用户名'
+      },
       user: {
         required: '该项为必填',
         phone: '请输入正确手机号码'
@@ -16,6 +20,16 @@ export let veeCustomMessage = {
       password: {
         required: '该项为必填'
       },
+      validCodes: {
+        required: '该项为必填',
+        // confirmed: '验证码错误'
+        lengthFour: '验证码必须为4位',
+        lengthSix: '手机验证码必须为6位',
+        lengthSix: '手机验证码必须为6位',
+        digits: (field, params) => `验证码必须为${params[0]}位`,
+        numeric: '该项必须为数字',
+        isCorrect: (field, params)=>'验证码错误'
+     },
       validateCode: {
          required: '该项为必填',
          // confirmed: '验证码错误'
@@ -55,7 +69,8 @@ export let veeCustomMessage = {
       },
       comfirmPassWord:{
         required: '该项为必填',
-        confirmed: '新旧密码不一致'
+        // confirmed: '新旧密码不一致'
+        confirmed: (field, params)=>'新旧密码不一致'
       }
     }
   }
@@ -66,6 +81,20 @@ export let veeCustomMessage = {
 
 // 自定义Vee验证组件规则
 export let veeCustomRules = [
+  {
+    name: 'account',
+    description: '账号验证',
+    validator: {
+      messages: {
+        cn: (field, args) => {
+          return '请输入4到16位的用户名';
+        }
+      },
+      validate(value, args) {
+        return value.length >= 4 && value.length <= 16 ? true : false;
+      }
+    }
+  },
   {
     name: 'phone',
     description: '手机验证',
@@ -105,6 +134,37 @@ export let veeCustomRules = [
       },
       validate(value, args) {
         return value.length == 6 ? true : false;
+      }
+    }
+  },
+  {
+    name: 'isCorrect',
+    description: '验证码错误',
+    validator: {
+      messages: {
+        cn: (field, args) => {
+          return '验证码错误';
+        }
+      },
+      validate(value, args) {   
+             
+        return value == args[0] ? true : false;
+      }
+    }
+  },
+
+  {
+    name: 'confirmed',
+    description: '新旧密码不一致',
+    validator: {
+      messages: {
+        cn: (field, args) => {
+          return '新旧密码不一致';
+        }
+      },
+      validate(value, args) {   
+            
+        return value == args[0] ? true : false;
       }
     }
   },

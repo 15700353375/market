@@ -7,6 +7,7 @@
 import Vue from 'vue'
 import qs from 'qs'
 import axios from 'axios'
+import { mapState } from 'vuex';
 import {
   urls,
   noTokenReq
@@ -71,8 +72,12 @@ let post = function(url, params, btn){
   
   // 验证权限
   // if(validatePower(url)){
+    
     return axios.post(url, requestData)
                 .then( (res) => {
+                  if(res.code == 433){
+                    this.$store.commit('login/setUserInfo', {});
+                  }
                   
                   if(btn){
                     btn.loading = false;
@@ -91,9 +96,28 @@ let post = function(url, params, btn){
   // }
 }
 
+let qsPost = function(url, params, btn){
+  let requestData = params ? qs.stringify(params) : {};
+    return axios.post(url, requestData)
+                .then( (res) => {
+                  
+                  if(btn){
+                    btn.loading = false;
+                  }
+                  return resolveSuccessRes(res);
+                }).catch((error)=>{
+                  if(btn){
+                    btn.loading = false;
+                  }
+                  resolveFailRes(error.response.status);
+                })
+
+}
+
 // get请求
 let get = function(url, params, btn){
-  let requestData = params ? qs.stringify(params) : {};
+  let requestData = params ? params : {};
+  
   // 验证权限
   // if(validatePower(url)){
     return axios.get(url, {params: requestData})
@@ -116,13 +140,17 @@ let get = function(url, params, btn){
 
 
 // 初始化axios
-axios.defaults.baseURL = urls.BASE_URL;
+axios.defaults.baseURL = 'http://bitcoin.xxw360.com/';
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+// axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+// axios.defaults.headers.post['Access-Control-Request-Method'] = 'Post';
+// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 axios.defaults.timeout = 25000;
 
 
 // ajax请求,挂在到Vue中
 Vue.prototype.$ajaxPost = post;
+Vue.prototype.$ajaxQsPost = qsPost;
 Vue.prototype.$ajaxGet = get;
 

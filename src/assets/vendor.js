@@ -43,6 +43,10 @@ import './fonts/style.css';
 // import './css/components/SelfInfoDialog.less';
 // import './css/components/editPassWordDialog.less';
 
+import './css/offcanvas.min.css';
+
 import './css/newCss/common.less';
 import './css/newCss/indexs.less';
 import './css/newCss/list.less';
+import './css/newCss/technicals.less';
+import './css/newCss/login.less';

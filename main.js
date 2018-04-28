@@ -22,7 +22,7 @@ import registerVeeCustomValidate from '@Util/registerVeeCustomValidate';
 import registerAxios from '@Util/registerAxios';
 import clickOutside from '@Util/clickOutside';
 import comUtil from '@Util/comUtil';
-import { noTokenUrls } from '@Util/axiosConfig'
+// import { noTokenUrls } from '@Util/axiosConfig'
 
 Vue.use(Vuex);
 Vue.use(VueCookie);
@@ -62,15 +62,16 @@ window.app = app;
 
 // 路由跳转之前，检测是否有token
 router.beforeEach((to, from, next) => {
-  if (noTokenUrls.indexOf(to.path) == -1) {
-    // 跳转需要token的路由,检测session是否有token
-    // let token = sessionStorage.getItem("agentToken");
-    if(token){
-      // next();
-    }else{
-      // next({ path: '/' });
-    }
-  }else{
-    // next();
-  }
+  next()
+  // if (noTokenUrls.indexOf(to.path) == -1) {
+  //   // 跳转需要token的路由,检测session是否有token
+  //   // let token = sessionStorage.getItem("agentToken");
+  //   if(token){
+  //     // next();
+  //   }else{
+  //     // next({ path: '/' });
+  //   }
+  // }else{
+  //   // next();
+  // }
 })

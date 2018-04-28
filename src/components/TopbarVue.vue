@@ -9,7 +9,7 @@
   <div class="displayNone">{{keywordChange}}</div>
   <div class="headerBox">
     <div class="headerTop clearFloat">
-      <img src="/agentStatic/img/logopc.png" alt="" class="logo fl">
+      <img @click='goindex' src="/agentStatic/img/logopc.png" alt="" class="logo fl">
       <div class="sousuoBox clearFloat">
         <span class="shangpin fl sousuodisplay">商品代码</span>
         <input type="text" placeholder="搜索" class="sousuo fr sousuodisplay" v-model="keywords" @change="change">
@@ -17,13 +17,14 @@
       </div>
       <div class="dengluBox">
         <div class="weidenglu" >
-          <span class="sign">登录</span>
-          <span class="register">免费注册</span>
+          <span v-if="username" class="cur-p" @click='personal'>{{username}}</span>
+          <span v-else class="sign" @click='login'>登录</span>
+          <span v-if="!username" class="register" @click='register'>免费注册</span>
         </div>
         <div class="yidenglu">
           <!-- <router-link :to="{name:'HelloWorld'}" tag="span">欢迎瓜子可可</router-link> -->
           <span></span>
-          <span>退出！</span>
+          <span @click="logout">退出！</span>
         </div>
       </div>
 
@@ -34,22 +35,10 @@
         <img src="/agentStatic/img/sousuo.png" alt="" class="sousuoIcon">
       </div>
     </div>
-    <div class="nav clearFloat">
-      <div class="left fl">
-        <span :class="[idx == 1 ? 'border':'']" @click="nav" :data-hi ="1">概览</span>
-        <span :class="[idx == 2 ? 'border':'']" @click="nav" :data-hi ="2">表现</span>
-        <span :class="[idx == 3 ? 'border':'']" @click="nav" :data-hi ="3">震荡指标</span>
-        <span :class="[idx == 4 ? 'border':'']" @click="nav" :data-hi ="4">跟随趋势</span>
-      </div>
-      <div class="right fr">
-          <div class="item">USD</div>
-          <div class="item yuanBox" @click='yuandian'>
-              <div class="yuan" @click='yuandian' :class="[yuan == true ? 'left' : 'right']"></div>
-          </div>
-          <div class="item">BTC</div>
-      </div>
-    </div>
+
   </div>
+
+  <LoginVue ref='login'></LoginVue>
 </div>
 
 </template>
@@ -57,7 +46,7 @@
 <script>
   //加载相关依赖
   import { mapState } from 'vuex';
-
+  import LoginVue from '@Components/LoginVue';
   export default {
     props: ['navData'],
     data() {
@@ -66,7 +55,7 @@
 
         //相关模态框开关
         dialogs: {
-          SelfInfoDialog: false,
+          gologin: false,
           editPassWordDialog: false,
         },
         keywords: '',
@@ -96,11 +85,20 @@
 
     }),
     methods: {
+      logout(){
+        this.$store.commit('login/setUserInfo', {});
+      },
+
+      goindex(){
+        this.$router.push({name:'report'});
+      },
       nav(e){
         console.log(e.target.dataset.hi)
         this.idx = e.target.dataset.hi
 
         this.$store.commit('common/setlistStatus', this.idx);
+
+        this.$router.push({name:'report'});
       },
 
       change(e){
@@ -122,8 +120,26 @@
           this.$store.commit('common/setRight', this.right);
       },
 
+      // 登录
+      login(){
+        this.dialogs.login = true;
+        this.$refs.login.$emit('gologin', 1);
+      },
+
+      // 登录
+      register(){
+        this.dialogs.login = true;
+        this.$refs.login.$emit('gologin', 2);
+      },
+
+      // 个人中心
+      personal(){
+        this.$router.push({name:'basic'});
+      }
+
     },
     components: {
+      LoginVue
     }
   }
 

@@ -6,7 +6,7 @@ const getters = {};
 
 
 const mutations = {
-  setUserInfo (state,userInfo) {
+  setUserInfo (state,userInfo) {    
     // 变更状态
     state.userInfo = userInfo;
   },
