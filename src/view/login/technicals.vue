@@ -15,7 +15,7 @@
                 <button class="float_right btn btn-default ch_btn_green" @click='follow'>关注BTCUSD</button>
             </div>
             <div class="color_gray littles ">
-                <div class="font_strong bitTitle">比特币/美元 <span>BTCUSD</span></div>
+                <div class="font_strong bitTitle">比特币/美元 <span>{{showName}}</span></div>
                 <button v-if='!updata_flag' class="float_right btn btn-default ch_btn_green" @click='updata'>定时刷新</button>
                 <button v-else class="float_right btn btn-default ch_btn_green" @click='updata'>取消定时</button>
             </div>
@@ -200,12 +200,15 @@ import LittleCharts from '@Components/LittleCharts';
         refresh: false,
         timer2: null,
 
+        showName: '',
+
       }
     },
     mounted(){
 
-        
-        // 默认当前头部为第一个
+        this.list.name = this.listName;
+
+        this.showName = this.listName.split(':')[1];
     },
     computed:{
         // 状态管理
@@ -214,11 +217,10 @@ import LittleCharts from '@Components/LittleCharts';
                 this.list.type = Number(state.common.listStatus);
                 this.list.right = state.common.right;
                 this.list.keyword = state.common.keywords;
-                this.list.name = state.common.listName;
-                // debugger
-                console.log(this.list.type)
+                
+                 
             },
-
+            listName: state => state.common.listName,
             user: state => state.login.userInfo,
         }),
 
@@ -280,6 +282,8 @@ import LittleCharts from '@Components/LittleCharts';
             if(parmas.timer == '1DAY'){
                 parmas.timer = '';
             }
+            this.list.name = this.listName;
+            
             // 请求数据
             let datas = this.buildData(this.list.name,parmas.timer);
             
