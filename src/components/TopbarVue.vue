@@ -24,7 +24,7 @@
         <div class="yidenglu">
           <!-- <router-link :to="{name:'HelloWorld'}" tag="span">欢迎瓜子可可</router-link> -->
           <span></span>
-          <span @click="logout">退出！</span>
+          <span v-if="username" @click="logout">退出！</span>
         </div>
       </div>
 
