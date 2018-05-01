@@ -64,7 +64,7 @@ body{
 
 
 /* // 大屏幕 */
-@media only screen and (min-width: 1040px) {
+@media only screen and (min-width: 768px) {
     .content{
         width: 1230px;
     }
@@ -78,7 +78,7 @@ body{
 }
 
 /*移动端*/
-@media only screen and (max-width: 1039px){
+@media only screen and (max-width: 767px){
     .content{
         width: 100%;
         margin-top:0px;

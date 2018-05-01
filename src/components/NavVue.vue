@@ -231,6 +231,19 @@
     .sider{
         margin:0px;
         width:153px;
+        background:#495263;
+    }
+
+    .sider dl dt{
+        color:#fff;
+    }
+
+    .sider dl dd p a{
+        color:#e5e5e5;
+    }
+
+    .navbar .container>.navbar-collapse{
+        background:#495263;
     }
 }
 
