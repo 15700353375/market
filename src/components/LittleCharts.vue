@@ -6,6 +6,7 @@
 
 <template>
     <div class="clearfix charts_box">
+        <div class="chart_tit">{{chartsTit}}</div>
         <div class="text-box">
             <div class="text-center">中立</div>
             <div class="clearfix text2">
@@ -17,7 +18,22 @@
                 <span class="float_right">强烈买入</span>
             </div>
         </div>
+        <div class="echarts_box_shadow"></div>
         <div :id="chartsName" class="charts_gauge"></div>
+        <div class="statistics" v-if="chartsData">
+            <div class="stac_item">
+                <div class="item_number color_red">{{chartsData.sell}}</div>
+                <div class="item_text">卖出</div>
+            </div>
+            <div class="stac_item">
+                <div class="item_number color_gray">{{chartsData.neutral}}</div>
+                <div class="item_text">中立</div>
+            </div>
+            <div class="stac_item">
+                <div class="item_number color_blue">{{chartsData.buy}}</div>
+                <div class="item_text">买入</div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -27,7 +43,7 @@
   // 引入外部模块
   import {echarts} from '@Util/charts';
   export default {
-    props: ['chartsName'],
+    props: ['chartsName','chartsTit','chartsData'],
     data(){
       return {
         
@@ -38,13 +54,43 @@
 
       }
     },
+    watch: {  
+        chartsData(newValue, oldValue){  
+            
+            this.chartsData = newValue;
+            this.drawChar1();
+            // buy(newValue, oldValue){
+            //     console.log(this.chartsData)
+            // },
+            // sell(newValue, oldValue){
+
+            // },
+            // neutral(newValue, oldValue){
+
+            // },
+            // pointer(newValue, oldValue){
+
+            // }
+    　　}  
+    },
     mounted(){
         // 默认当前头部为第一个
-        // this.$router.push({name:'basic'})
         this.drawChar1();
+        
     },
     computed:{
-      
+      // 状态管理
+        // ...mapState({
+        //     countLocalState(state){
+        //         this.list.type = Number(state.common.listStatus);
+        //         this.list.right = state.common.right;
+        //         this.list.keyword = state.common.keywords;
+                
+                 
+        //     },
+        //     listName: state => state.common.listName,
+        //     user: state => state.login.userInfo,
+        // }),
     },
     methods: {
 
@@ -138,7 +184,8 @@
                                 }
                             },
                             color:'auto',
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            fontSize:26
                         },
                         data: [{value: 50,}],
                     }
@@ -151,10 +198,22 @@
     
         myChart.setOption(option)
 
-        setInterval(function () {
-            option.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;
-            myChart.setOption(option, true);
-        },2000);
+        let chartVal = 50;
+
+        if(this.chartsData){
+            // debugger
+            switch(this.chartsData.pointer){
+                case '强烈卖出' : chartVal = 10; break;
+                case '卖出' : chartVal = 30; break;
+                case '中立' : chartVal = 50; break;
+                case '买入' : chartVal = 70; break;
+                case '强烈买入' : chartVal = 90; break;
+            }
+        }
+
+        option.series[0].data[0].value = chartVal;
+        myChart.setOption(option, true);
+
 
 
       },
@@ -172,8 +231,13 @@
 <style scoped lang='less'>
     .charts_box{
         width:350px;
-        height: 250px;
+        height: 300px;
         position: relative;
+        .chart_tit{
+            text-align: center;
+            font-size: 20px;
+            line-height: 50px;
+        }
         .text-box{
             position: absolute;
             width: 100%;
@@ -186,6 +250,38 @@
                 width:100%;
                 margin:0 auto;
                 margin-top:45px;
+            }
+        }
+        .echarts_box_shadow{
+            position: absolute;
+            left: 77px;
+            top: 73px;
+            width: 198px;
+            height: 105px;
+            border-top-left-radius: 306px;
+            border-top-right-radius: 306px;
+            box-shadow: inset 0 30px 60px -10px rgba(59,179,228,.3);
+        }
+        .statistics{
+            position: absolute;
+            bottom:0px;
+            width:228px;
+            height: 44;
+            left: 50%;
+            margin-left: -114px;
+            .stac_item{
+                width:76px;
+                height: 44px;
+                float: left;
+                .item_number{
+                    font-size: 20px;
+                    text-align: center;
+                }
+                .item_text{
+                    color:#9db2bd;
+                    font-size: 12px;
+                    text-align: center;
+                }
             }
         }
     }

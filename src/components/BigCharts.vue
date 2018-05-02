@@ -6,6 +6,7 @@
 
 <template>
     <div class="clearfix charts_box">
+        <div class="chart_tit">{{chartsTit}}</div>
         <div class="text-box">
             <div class="text-center">中立</div>
             <div class="clearfix text2">
@@ -17,7 +18,22 @@
                 <span class="float_right">强烈买入</span>
             </div>
         </div>
+        <div class="echarts_box_shadow"></div>
         <div :id="chartsName" class="charts_gauge"></div>
+        <div class="statistics">
+            <div class="stac_item">
+                <div class="item_number color_red">{{chartsData.sell}}</div>
+                <div class="item_text">卖出</div>
+            </div>
+            <div class="stac_item">
+                <div class="item_number color_gray">{{chartsData.neutral}}</div>
+                <div class="item_text">中立</div>
+            </div>
+            <div class="stac_item">
+                <div class="item_number color_blue">{{chartsData.buy}}</div>
+                <div class="item_text">买入</div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -27,7 +43,7 @@
   // 引入外部模块
   import {echarts} from '@Util/charts';
   export default {
-    props: ['chartsName'],
+    props: ['chartsName','chartsTit','chartsData'],
     data(){
       return {
         
@@ -38,10 +54,19 @@
 
       }
     },
+      watch: {  
+        chartsData(newValue, oldValue){  
+            
+            this.chartsData = newValue;
+            this.drawChar1();
+    　　}  
+    },
     mounted(){
         // 默认当前头部为第一个
         // this.$router.push({name:'basic'})
         this.drawChar1();
+        console.log(this.chartsData)
+        
     },
     computed:{
       
@@ -109,7 +134,15 @@
                                         color: "#3bb3e4" // 90% 处的颜色
                                     }], false) ]
                                 ],
-                                width: 5
+                                width: 5,
+                                shadowBlur:{
+                                    // shadowColor: 'rgba(0, 0, 0, 0.5)',
+                                    shadowColor:'#000',
+                                    shadowOffsetX: 0,
+                                    shadowOffsetY: 10,
+                                    opacity:0.5,
+                                    shadowBlur: 20
+                                },
                             }
                         },
                         splitLine: { 
@@ -138,8 +171,8 @@
                                 }
                             },
                             color:'auto',
-                            // fontWeight: 'bold',
-                            fontSize:12
+                            fontWeight: 'bold',
+                            fontSize:26
                         },
                         data: [{value: 50,}],
                     }
@@ -152,10 +185,21 @@
     
         myChart.setOption(option)
 
-        setInterval(function () {
-            option.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;
-            myChart.setOption(option, true);
-        },2000);
+        let chartVal = 50;
+
+        if(this.chartsData){
+            // debugger
+            switch(this.chartsData.pointer){
+                case '强烈卖出' : chartVal = 10; break;
+                case '卖出' : chartVal = 30; break;
+                case '中立' : chartVal = 50; break;
+                case '买入' : chartVal = 70; break;
+                case '强烈买入' : chartVal = 90; break;
+            }
+        }
+
+        option.series[0].data[0].value = chartVal;
+        myChart.setOption(option, true);
 
 
       },
@@ -173,8 +217,13 @@
 <style scoped lang='less'>
     .charts_box{
         width:500px;
-        height: 300px;
+        height: 380px;
         position: relative;
+        .chart_tit{
+            text-align: center;
+            font-size: 20px;
+            line-height: 50px;
+        }
         .text-box{
             position: absolute;
             width: 100%;
@@ -187,6 +236,38 @@
                 width:88%;
                 margin:0 auto;
                 margin-top:80px;
+            }
+        }
+        .echarts_box_shadow{
+            position: absolute;
+            left: 108px;
+            top: 85px;
+            width: 288px;
+            height: 149px;
+            border-top-left-radius: 306px;
+            border-top-right-radius: 306px;
+            box-shadow: inset 0 30px 60px -10px rgba(59,179,228,.3);
+        }
+        .statistics{
+            position: absolute;
+            bottom:0px;
+            width:228px;
+            height: 44;
+            left: 50%;
+            margin-left: -114px;
+            .stac_item{
+                width:76px;
+                height: 44px;
+                float: left;
+                .item_number{
+                    font-size: 20px;
+                    text-align: center;
+                }
+                .item_text{
+                    color:#9db2bd;
+                    font-size: 12px;
+                    text-align: center;
+                }
             }
         }
     }

@@ -13,6 +13,10 @@ const state = {
   keywords: '',
 
   listName: '',
+
+  chartsData1: {},
+  chartsData2: {},
+  chartsData3: {},
 };
 
 const getters = {};
@@ -38,6 +42,19 @@ const mutations = {
     
     // 变更状态
     state.listName = listName;
+  },
+
+  setChartsData1(state,chartsData1) {    
+    // 变更状态
+    state.chartsData1 = chartsData1;
+  },
+  setChartsData2(state,chartsData2) {    
+    // 变更状态
+    state.chartsData2 = chartsData2;
+  },
+  setChartsData3(state,chartsData3) {    
+    // 变更状态
+    state.chartsData3 = chartsData3;
   },
 };
 

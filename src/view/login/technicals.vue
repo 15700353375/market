@@ -37,18 +37,18 @@
         </ul>
         <div class="clearfix tech_charts">
             <div class="big">
-                <div class="max"><BigCharts :chartsName='"mycharts"'></BigCharts></div>
+                <div class="max"><BigCharts :chartsName='"mycharts"' :chartsTit='"总结"' :chartsData='chartsData3'></BigCharts></div>
                 
-                <div class="min"><LittleCharts :chartsName='"mycharts1"'></LittleCharts></div>
+                <div class="min little"><LittleCharts :chartsName='"mycharts1"' :chartsTit='"总结"' :chartsData='chartsData3'></LittleCharts></div>
             </div>
-            <div class="little1">
-                <LittleCharts :chartsName='"mycharts2"'></LittleCharts>
+            <div class="little1 little">
+                <LittleCharts :chartsName='"mycharts2"' :chartsTit='"震荡指标"' :chartsData='chartsData1'></LittleCharts>
             </div>
-            <div class="little2">
-                <LittleCharts :chartsName='"mycharts3"'></LittleCharts>
+            <div class="little2 little">
+                <LittleCharts :chartsName='"mycharts3"' :chartsTit='"移动平均线"' :chartsData='chartsData2'></LittleCharts>
             </div>
         </div>
-        <div class="clearfix">
+        <div class="clearfix mg_t20 tec_box">
             <div class="clearfix table_list">
                 <div class="table_item">
                     <div class="font_size20 font_strong mg_b20">震荡指标</div>
@@ -68,7 +68,9 @@
                                     {{item.label}}
                                 </td>
                                 <td class="text-right val">{{item.value ? Number(item.value).toFixed(1) : '—'}}</td>
-                                <td class="text-right val">{{item.oper ? item.oper : ''}}</td>             
+                                <td class="text-right val color_red" v-if="item.oper == '卖出'">{{item.oper}}</td> 
+                                <td class="text-right val" v-if="item.oper == '中立'">{{item.oper}}</td> 
+                                <td class="text-right val color_blue" v-if="item.oper == '买入'">{{item.oper}}</td> 
                             </tr>
                         </template>
                         <tr v-else>
@@ -97,7 +99,9 @@
                                 </td>
                                 <!-- <td class="text-right val" style="width:15%">{{item.value}}</td> -->
                                 <td class="text-right val">{{item.value ? Number(item.value).toFixed(1) : '—'}}</td>
-                                <td class="text-right val">{{item.oper ? item.oper : ''}}</td>                  
+                                <td class="text-right val color_red" v-if="item.oper == '卖出'">{{item.oper}}</td> 
+                                <td class="text-right val" v-if="item.oper == '中立'">{{item.oper}}</td> 
+                                <td class="text-right val color_blue" v-if="item.oper == '买入'">{{item.oper}}</td>                
                             </tr>
                         </template>
                         <tr v-else>
@@ -202,6 +206,26 @@ import LittleCharts from '@Components/LittleCharts';
 
         showName: '',
 
+        chartsData1: {
+            buy: 0,
+            sell: 0,
+            neutral: 0,
+            pointer: '',
+        },
+        chartsData2: {
+            buy: 0,
+            sell: 0,
+            neutral: 0,
+            pointer: '',
+        },
+        chartsData3: {
+            buy: 0,
+            sell: 0,
+            neutral: 0,
+            pointer: '',
+        }
+        // 指针参数
+
       }
     },
     mounted(){
@@ -269,7 +293,7 @@ import LittleCharts from '@Components/LittleCharts';
             if(this.updata_flag){
                 this.timer2 = setInterval(()=>{
                     this.refresh = !this.refresh;
-                },5000)
+                },300000)
             }else{
                 clearInterval(this.timer2)
             }
@@ -354,7 +378,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'RSI',
                         value: item,
-                        oper: dealData.computeRSISignal(item, this.list[index + 1])
+                        oper: dealData.computeRSISignal(item, list[index + 1])
                     };
                     list1.push(obj);
                     break;
@@ -362,7 +386,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'Stoch快线',
                         value: item,
-                        oper: dealData.computeStochSignal(item, this.list[index + 1],this.list[index + 2],this.list[index + 3])
+                        oper: dealData.computeStochSignal(item, list[index + 1],list[index + 2],list[index + 3])
                     };
                     list1.push(obj);
                     break;
@@ -370,7 +394,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'商品路径',
                         value: item,
-                        oper: dealData.computeCCI20Signal(item, this.list[index + 1])
+                        oper: dealData.computeCCI20Signal(item, list[index + 1])
                     };
                     list1.push(obj);
                     break;
@@ -378,7 +402,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'平均趋向',
                         value: item,
-                        oper: dealData.computeADXSignal(item, this.list[index + 1],this.list[index + 2],this.list[index + 3],this.list[index + 4])
+                        oper: dealData.computeADXSignal(item, list[index + 1],list[index + 2],list[index + 3],list[index + 4])
                     };
                     list1.push(obj);
                     break;
@@ -386,7 +410,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'动量震荡',
                         value: item,
-                        oper: dealData.computeAOSignal(item, this.list[index + 1])
+                        oper: dealData.computeAOSignal(item, list[index + 1])
                     };
                     list1.push(obj);
                     break;
@@ -394,7 +418,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'动量指标',
                         value: item,
-                        oper: dealData.computeMomSignal(item, this.list[index + 1])
+                        oper: dealData.computeMomSignal(item, list[index + 1])
                     };
                     list1.push(obj);
                     break;
@@ -402,7 +426,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'MACD',
                         value: item,
-                        oper: dealData.computeMACDSignal(item, this.list[index + 1])
+                        oper: dealData.computeMACDSignal(item, list[index + 1])
                     };
                     list1.push(obj);
                     break;
@@ -410,7 +434,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'stochastic',
                         value: item,
-                        oper: dealData.computeSimpleSignal(this.list[index - 1])
+                        oper: dealData.computeSimpleSignal(list[index - 1])
                     };
                     list1.push(obj);
                     break;
@@ -418,7 +442,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'威廉指标',
                         value: item,
-                        oper: dealData.computeSimpleSignal(this.list[index - 1])
+                        oper: dealData.computeSimpleSignal(list[index - 1])
                     };
                     list1.push(obj);
                     break;
@@ -426,7 +450,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'牛熊力量',
                         value: item,
-                        oper: dealData.computeSimpleSignal(this.list[index - 1])
+                        oper: dealData.computeSimpleSignal(list[index - 1])
                     };
                     list1.push(obj);
                     break;
@@ -434,7 +458,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'终极震荡指标',
                         value: item,
-                        oper: dealData.computeSimpleSignal(this.list[index - 1])
+                        oper: dealData.computeSimpleSignal(list[index - 1])
                     };
                     list1.push(obj);
                     break;
@@ -444,7 +468,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'EMA(10)',
                         value: item,
-                        oper: dealData.computeMASignal(item, this.list[index + 1])
+                        oper: dealData.computeMASignal(item, list[index + 1])
                     };
                     list2.push(obj);
                     break;
@@ -452,7 +476,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'MA(10)',
                         value: item,
-                        oper: dealData.computeMASignal(item, this.list[index - 1])
+                        oper: dealData.computeMASignal(item, list[index - 1])
                     };
                     list2.push(obj);
                     break;
@@ -460,7 +484,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'EMA(20)',
                         value: item,
-                        oper: dealData.computeMASignal(item, this.list[index - 2])
+                        oper: dealData.computeMASignal(item, list[index - 2])
                     };
                     list2.push(obj);
                     break;
@@ -468,7 +492,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'SMA(20)',
                         value: item,
-                        oper: dealData.computeMASignal(item, this.list[index - 3])
+                        oper: dealData.computeMASignal(item, list[index - 3])
                     };
                     list2.push(obj);
                     break;
@@ -476,7 +500,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'EMA(30)',
                         value: item,
-                        oper: dealData.computeMASignal(item, this.list[index - 4])
+                        oper: dealData.computeMASignal(item, list[index - 4])
                     };
                     list2.push(obj);
                     break;
@@ -484,7 +508,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'SMA(30)',
                         value: item,
-                        oper: dealData.computeMASignal(item, this.list[index - 5])
+                        oper: dealData.computeMASignal(item, list[index - 5])
                     };
                     list2.push(obj);
                     break;
@@ -492,7 +516,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'EMA(50)',
                         value: item,
-                        oper: dealData.computeMASignal(item, this.list[index - 6])
+                        oper: dealData.computeMASignal(item, list[index - 6])
                     };
                     list2.push(obj);
                     break;
@@ -500,7 +524,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'SMA(50)',
                         value: item,
-                        oper: dealData.computeMASignal(item, this.list[index - 7])
+                        oper: dealData.computeMASignal(item, list[index - 7])
                     };
                     list2.push(obj);
                     break;
@@ -508,7 +532,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'EMA(100)',
                         value: item,
-                        oper: dealData.computeMASignal(item, this.list[index - 8])
+                        oper: dealData.computeMASignal(item, list[index - 8])
                     };
                     list2.push(obj);
                     break;
@@ -516,7 +540,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'SMA(100)',
                         value: item,
-                        oper: dealData.computeMASignal(item, this.list[index - 9])
+                        oper: dealData.computeMASignal(item, list[index - 9])
                     };
                     list2.push(obj);
                     break;
@@ -524,7 +548,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'EMA(200)',
                         value: item,
-                        oper: dealData.computeMASignal(item, this.list[index - 10])
+                        oper: dealData.computeMASignal(item, list[index - 10])
                     };
                     list2.push(obj);
                     break;
@@ -532,7 +556,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'SMA(200)',
                         value: item,
-                        oper: dealData.computeMASignal(item, this.list[index - 11])
+                        oper: dealData.computeMASignal(item, list[index - 11])
                     };
                     list2.push(obj);
                     break;
@@ -540,7 +564,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'一目均衡',
                         value: item,
-                        oper: dealData.computeSimpleSignal(item, this.list[index - 1])
+                        oper: dealData.computeSimpleSignal(item, list[index - 1])
                     };
                     list2.push(obj);
                     break;
@@ -548,7 +572,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'成交量',
                         value: item,
-                        oper: dealData.computeSimpleSignal(this.list[index - 1])
+                        oper: dealData.computeSimpleSignal(list[index - 1])
                     };
                     list2.push(obj);
                     break;
@@ -556,7 +580,7 @@ import LittleCharts from '@Components/LittleCharts';
                     obj = {
                         label:'船体移动',
                         value: item,
-                        oper: dealData.computeSimpleSignal(this.list[index - 1])
+                        oper: dealData.computeSimpleSignal(list[index - 1])
                     };
                     list2.push(obj);
                     break;
@@ -586,12 +610,61 @@ import LittleCharts from '@Components/LittleCharts';
                 list2: list2,
                 list3: list3
             }
-            console.log(list1)
+            
+            
+            let list1Data = this.dealList(list1);
+            
+            this.chartsData1 = {
+                sell: list1Data[0],
+                buy: list1Data[1],
+                neutral: list1Data[2],
+                pointer: dealData.computeRecommendSignal(list[0]),
+            }
+
+            let list2Data = this.dealList(list2);
+            
+            this.chartsData2 = {
+                sell: list2Data[0],
+                buy: list2Data[1],
+                neutral: list2Data[2],
+                pointer: dealData.computeRecommendSignal(list[2]),
+            }
+
+            let list3Data = this.dealList(list2);
+            
+            this.chartsData3 = {
+                sell: Number(list1Data[0]) + Number(list2Data[0]),
+                buy: Number(list1Data[1]) + Number(list2Data[1]),
+                neutral: Number(list1Data[2]) + Number(list2Data[2]),
+                pointer: dealData.computeRecommendSignal(list[1]),
+            }
+
+            
             return allList;
+        },
+
+        dealList(list){
+            if(!list || !list.length) return;
+
+            let sell = 0;
+            let buy = 0;
+            let neutral = 0;
+            list.forEach(item => {
+                if(item.oper == '卖出'){
+                    sell++;
+                }else if(item.oper == '买入'){
+                    buy++;
+                }else{
+                    neutral++;
+                }
+            })
+            return [sell,buy,neutral];
         },
 
         // 处理传入数据的方法 --时间
         buildData(name, type) {
+
+            name = 'POLONIEX:BTCUSDT'
             
             if(!type){
                 var html = '{"symbols":{"tickers":["'+  name + '"],"query":{"types":[]}},"columns":["Recommend.Other'+ type +'","Recommend.All'+ type +'","Recommend.MA'+ type +'","RSI'+ type +'","RSI[1]'+ type +'","Stoch.K'+ type +'","Stoch.D'+ type +'","Stoch.K[1]'+ type +'","Stoch.D[1]'+ type +'","CCI20'+ type +'","CCI20[1]'+ type +'","ADX'+ type +'","ADX+DI'+ type +'","ADX-DI'+ type +'","ADX+DI[1]'+ type +'","ADX-DI[1]'+ type +'","AO'+ type +'","AO[1]'+ type +'","Mom'+ type +'","Mom[1]'+ type +'","MACD.macd'+ type +'","MACD.signal'+ type +'","Rec.Stoch.RSI'+ type +'","Stoch.RSI.K'+ type +'","Rec.WR'+ type +'","W.R'+ type +'","Rec.BBPower'+ type +'","BBPower'+ type +'","Rec.UO'+ type +'","UO'+ type +'","EMA10'+ type +'","close'+ type +'","SMA10'+ type +'","EMA20'+ type +'","SMA20'+ type +'","EMA30'+ type +'","SMA30'+ type +'","EMA50'+ type +'","SMA50'+ type +'","EMA100'+ type +'","SMA100'+ type +'","EMA200'+ type +'","SMA200'+ type +'","Rec.Ichimoku'+ type +'","Ichimoku.BLine'+ type +'","Rec.VWMA'+ type +'","VWMA'+ type +'","Rec.HullMA9'+ type +'","HullMA9'+ type +'","Pivot.M.Classic.S3'+ type +'","Pivot.M.Classic.S2'+ type +'","Pivot.M.Classic.S1'+ type +'","Pivot.M.Classic.Middle'+ type +'","Pivot.M.Classic.R1'+ type +'","Pivot.M.Classic.R2'+ type +'","Pivot.M.Classic.R3'+ type +'","Pivot.M.Fibonacci.S3'+ type +'","Pivot.M.Fibonacci.S2'+ type +'","Pivot.M.Fibonacci.S1'+ type +'","Pivot.M.Fibonacci.Middle'+ type +'","Pivot.M.Fibonacci.R1'+ type +'","Pivot.M.Fibonacci.R2'+ type +'","Pivot.M.Fibonacci.R3'+ type +'","Pivot.M.Camarilla.S3'+ type +'","Pivot.M.Camarilla.S2'+ type +'","Pivot.M.Camarilla.S1'+ type +'","Pivot.M.Camarilla.Middle'+ type +'","Pivot.M.Camarilla.R1'+ type +'","Pivot.M.Camarilla.R2'+ type +'","Pivot.M.Camarilla.R3'+ type +'","Pivot.M.Woodie.S3'+ type +'","Pivot.M.Woodie.S2'+ type +'","Pivot.M.Woodie.S1'+ type +'","Pivot.M.Woodie.Middle'+ type +'","Pivot.M.Woodie.R1'+ type +'","Pivot.M.Woodie.R2'+ type +'","Pivot.M.Woodie.R3'+ type +'","Pivot.M.Demark.S1'+ type +'","Pivot.M.Demark.Middle'+ type +'","Pivot.M.Demark.R1'+ type +'"]}';

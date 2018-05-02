@@ -29,23 +29,120 @@
             <tbody>
               <template v-if="tableData && tableData.length">
                 <tr v-for="itemParent in tableData">
-                  <td class="text-left color_blue cur-p" >
-                      <img :src="'/agentStatic/images/'+itemParent.d[0]+'.svg'" alt="">
-                      <span @click='goDetail(itemParent.s)'>{{itemParent.d[1]}}</span>
-                  </td>
-                  <td class="text-right">{{itemParent.d[2]}}</td>
-                  <td class="text-right">{{itemParent.d[3]}}</td>
-                  <td class="text-right">{{itemParent.d[4]}}</td>
-                  <td class="text-right">{{itemParent.d[5]}}</td>
-                  <td class="text-right">{{itemParent.d[6]}}</td>
-                  <td class="text-right">{{itemParent.d[7]}}</td>
-                  <td class="text-right" >
-                      <span v-if="isReadyType == 1" :class="[ itemParent.d[8] >= 0 ? 'color_green':'color_red']">{{itemParent.d[8]}}</span>
-                      <span v-else>{{itemParent.d[8]}}</span>
-                      <span v-if="isReadyType == 1">%</span></td>
-                  <td v-if="isReadyType == 2 || isReadyType == 3" class="text-right">{{itemParent.d[9]}}</td>
-                  <td v-if="isReadyType == 3" class="text-right">{{itemParent.d[10]}}</td>
-                  </td>
+                    <td class="text-left color_blue cur-p" >
+                        <img :src="'/agentStatic/images/'+itemParent.d[0]+'.svg'" alt="">
+                        <span @click='goDetail(itemParent.s)'>{{itemParent.d[1]}}</span>
+                    </td>
+                    <td class="text-right">
+                        <span v-if="isReadyType == 1 && itemParent.d[2]">{{comUtil.formatUnit(itemParent.d[2])}}</span>
+                        <span v-if="isReadyType == 2 && itemParent.d[2]" :class="[ itemParent.d[2] >= 0 ? 'color_green':'color_red']">{{comUtil.formatMoney(itemParent.d[2])+ '%'}}</span>
+                        <!-- <span v-if="isReadyType == 3 && itemParent.d[2]" :class="[ itemParent.d[2] >= 0 ? 'color_green':'color_red']">{{comUtil.formatMoney(itemParent.d[2])+ '%'}}</span> -->
+                        <span v-if="(isReadyType == 3 || isReadyType == 4) && itemParent.d[2]">
+                            <!-- <span v-if="itemParent.d[2].value">{{comUtil.formatMoney(itemParent.d[2].value)}} </span> -->
+                            <span v-if="itemParent.d[2].type == '强烈卖出'" class="color_red">︿ 强烈卖出</span>
+                            <span v-if="itemParent.d[2].type == '卖出'" class="color_red">︿ 卖出</span>
+                            <span v-if="itemParent.d[2].type == '中立'" class="color_gray">— 中立</span>
+                            <span v-if="itemParent.d[2].type == '买入'" class="color_blue">﹀ 买入</span>
+                            <span v-if="itemParent.d[2].type == '强烈买入'" class="color_blue">﹀ 强烈买入</span>
+                        </span>
+                        <span v-if="!itemParent.d[2]">—</span>
+                        <!-- <span v-if="isReadyType == 1">{{comUtil.formatUnit(itemParent.d[2])}}</span> -->
+                    </td>
+                    <td class="text-right">
+                        <span v-if="isReadyType == 1 && itemParent.d[3]">{{comUtil.formatUnit(itemParent.d[3])}}</span>
+                        <span v-if="isReadyType == 2 && itemParent.d[3]" :class="[ itemParent.d[3] >= 0 ? 'color_green':'color_red']">{{comUtil.formatMoney(itemParent.d[3])+ '%'}}</span>
+                        <span v-if="isReadyType == 3 && itemParent.d[3]">
+                            <span v-if="itemParent.d[3].value">{{comUtil.formatMoney(itemParent.d[3].value)}} </span>
+                            <span v-if="itemParent.d[3].type == '卖出'" class="color_red" title="卖出">︿ 做空</span>
+                            <span v-if="itemParent.d[3].type == '中立'" class="color_gray">— 中立</span>
+                            <span v-if="itemParent.d[3].type == '买入'" class="color_blue" title="买入">﹀ 做多</span>
+                        </span>
+                        <span v-if="isReadyType == 4 && itemParent.d[3]">{{itemParent.d[3]}}</span>
+                        <span v-if="!itemParent.d[3]">—</span>
+                        
+                    </td>
+                    <td class="text-right">
+                        <span v-if="isReadyType == 1 && itemParent.d[4]">{{itemParent.d[4]}}</span>
+                        <span v-if="isReadyType == 2 && itemParent.d[4]" :class="[ itemParent.d[4] >= 0 ? 'color_green':'color_red']">{{comUtil.formatMoney(itemParent.d[4])+ '%'}}</span>
+                        <span v-if="(isReadyType == 3 || isReadyType == 4) && itemParent.d[4]">
+                            <span v-if="itemParent.d[4].value">{{comUtil.formatMoney(itemParent.d[4].value)}} </span>
+                            <span v-if="itemParent.d[4].type == '卖出'" class="color_red" title="卖出">︿ 做空</span>
+                            <span v-if="itemParent.d[4].type == '中立'" class="color_gray">— 中立</span>
+                            <span v-if="itemParent.d[4].type == '买入'" class="color_blue" title="买入">﹀ 做多</span>
+                        </span>
+                        <span v-if="!itemParent.d[4]">—</span>                        
+                    </td>
+                    <td class="text-right">
+                        <span v-if="isReadyType == 1 && itemParent.d[5]">{{comUtil.formatUnit(itemParent.d[5])}}</span>
+                        <span v-if="isReadyType == 2 && itemParent.d[5]" :class="[ itemParent.d[5] >= 0 ? 'color_green':'color_red']">{{comUtil.formatMoney(itemParent.d[5])+ '%'}}</span>
+                        <span v-if="isReadyType == 3 && itemParent.d[5]">{{itemParent.d[5]}}</span>
+                        <span v-if="isReadyType == 4 && itemParent.d[5]">
+                            <span v-if="itemParent.d[5].value">{{comUtil.formatMoney(itemParent.d[5].value)}} </span>
+                            <span v-if="itemParent.d[5].type == '卖出'" class="color_red" title="卖出">︿ 做空</span>
+                            <span v-if="itemParent.d[5].type == '中立'" class="color_gray">— 中立</span>
+                            <span v-if="itemParent.d[5].type == '买入'" class="color_blue" title="买入">﹀ 做多</span>
+                        </span>
+                        <span v-if="!itemParent.d[5]">—</span>
+                        
+                    </td>
+                    <td class="text-right">
+                        <span v-if="isReadyType == 1 && itemParent.d[6]">{{comUtil.formatUnit(itemParent.d[6])}}</span>
+                        <span v-if="isReadyType == 2 && itemParent.d[6]" :class="[ itemParent.d[6] >= 0 ? 'color_green':'color_red']">{{comUtil.formatMoney(itemParent.d[6])+ '%'}}</span>
+                        <span v-if="(isReadyType == 3 || isReadyType == 4) && itemParent.d[6]">
+                            <span v-if="itemParent.d[6].value">{{comUtil.formatMoney(itemParent.d[6].value)}} </span>
+                            <span v-if="itemParent.d[6].type == '卖出'" class="color_red" title="卖出">︿ 做空</span>
+                            <span v-if="itemParent.d[6].type == '中立'" class="color_gray">— 中立</span>
+                            <span v-if="itemParent.d[6].type == '买入'" class="color_blue" title="买入">﹀ 做多</span>
+                        </span>
+                        <span v-if="!itemParent.d[6]">—</span>
+                        
+                    </td>
+                    <td class="text-right">
+                        <span v-if="isReadyType == 1 && itemParent.d[7]">{{comUtil.formatUnit(itemParent.d[7])}}</span>
+                        <span v-if="isReadyType == 2 && itemParent.d[7]" :class="[ itemParent.d[7] >= 0 ? 'color_green':'color_red']">{{comUtil.formatMoney(itemParent.d[7])+ '%'}}</span>
+                        <span v-if="(isReadyType == 3 || isReadyType == 4) && itemParent.d[7]">
+                            <span v-if="itemParent.d[7].value">{{comUtil.formatMoney(itemParent.d[7].value)}} </span>
+                            <span v-if="itemParent.d[7].type == '卖出'" class="color_red" title="卖出">︿ 做空</span>
+                            <span v-if="itemParent.d[7].type == '中立'" class="color_gray">— 中立</span>
+                            <span v-if="itemParent.d[7].type == '买入'" class="color_blue" title="买入">﹀ 做多</span>
+                        </span>
+                        <span v-if="!itemParent.d[7]">—</span>
+                        
+                    </td>
+                    <td class="text-right" >
+                        <span v-if="isReadyType == 1 && itemParent.d[8]" :class="[ itemParent.d[8] >= 0 ? 'color_green':'color_red']">{{comUtil.formatMoney(itemParent.d[8])+ '%'}}</span>
+                        <span v-if="isReadyType == 2 && itemParent.d[8]" :class="[ itemParent.d[8] >= 0 ? 'color_green':'color_red']">{{comUtil.formatMoney(itemParent.d[8])+ '%'}}</span>
+                        <span v-if="isReadyType == 3 && itemParent.d[8]">{{itemParent.d[8]}}</span>
+                        <span v-if="isReadyType == 4 && itemParent.d[8]">
+                            <span v-if="itemParent.d[8].value">{{comUtil.formatMoney(itemParent.d[8].value)}} </span>
+                            <span v-if="itemParent.d[8].type == '卖出'" class="color_red"  title="卖出">︿ 做空</span>
+                            <span v-if="itemParent.d[8].type == '中立'" class="color_gray">— 中立</span>
+                            <span v-if="itemParent.d[8].type == '买入'" class="color_blue" title="买入">﹀ 做多</span>
+                        </span>
+                        <span v-if="!itemParent.d[8]">—</span>
+                        
+                        <!-- <span v-else>{{itemParent.d[8]}}</span> -->
+                    </td>
+                    <td v-if="isReadyType == 2 || isReadyType == 3" class="text-right">
+                        <!-- <span>{{itemParent.d[9]}}</span> -->
+                        <span v-if="isReadyType == 2 && itemParent.d[9]" :class="[ itemParent.d[9] >= 0 ? 'color_green':'color_red']">{{comUtil.formatMoney(itemParent.d[9])+ '%'}}</span>    
+                        <span v-if="isReadyType == 3 && itemParent.d[9]">
+                            <span v-if="itemParent.d[9].value">{{comUtil.formatMoney(itemParent.d[9].value)}} </span>
+                            <span v-if="itemParent.d[9].type == '卖出'" class="color_red">︿ 卖出</span>
+                            <span v-if="itemParent.d[9].type == '中立'" class="color_gray">— 中立</span>
+                            <span v-if="itemParent.d[9].type == '买入'" class="color_blue">﹀ 买入</span>
+                        </span>
+                        <span v-if="!itemParent.d[9]">—</span>                    
+                    </td>
+                    <td v-if="isReadyType == 3" class="text-right">
+                        <span v-if="isReadyType == 3 && itemParent.d[10]">
+                            <span v-if="itemParent.d[10].value">{{comUtil.formatMoney(itemParent.d[10].value)}} </span>
+                            <span v-if="itemParent.d[10].type == '卖出'" class="color_red">︿ 卖出</span>
+                            <span v-if="itemParent.d[10].type == '中立'" class="color_gray">— 中立</span>
+                            <span v-if="itemParent.d[10].type == '买入'" class="color_blue">﹀ 买入</span>
+                        </span>
+                        <span v-if="!itemParent.d[10]">—</span>
+                    </td>
                 </tr>
               </template>
               <tr v-else>
@@ -70,19 +167,22 @@
 </template>
 
 <script>
-  import {urls} from '@Util/axiosConfig';
-  import { mapState } from 'vuex';
-
+    import {urls} from '@Util/axiosConfig';
+    import dealData from '@Util/dealData';
+    import { mapState } from 'vuex';
+    import comUtil from '@Util/comUtil';
     import TopbarList from '@Components/TopbarList';
-  export default {
+export default {
     data(){
       return {
+        comUtil: comUtil,
+        dealData: dealData,
         // table的列标题
         fenleis:[
                 ['名称','总市值','完全稀释市值','收盘价','可用币量','总币量','交易量','涨跌%'],
                 ['名称','涨跌%','本周表现','本月表现','3个月表现','6个月表现','年初至今表现','本年表现','波动率'],
                 ['名称','振荡指标评级','ADX','AO','ATR','CCI()','MACD水平','MACD信号','MOM','RSI()'],
-                ['名称','移动平均评级','收盘价','SMA()','SMA','SMA()','BB UP','BB LOW']
+                ['名称','移动平均评级','收盘价','SMA(20)','SMA(40)','SMA(200)','BB UP','BB LOW']
         ],
         // 当前table的列标题
         currentHead:[],
@@ -197,7 +297,7 @@
                     this.tableData = this.formatData(res.data);
                     if(!this.tableData || !this.tableData.length) return;
                     this.allList = this.clone(this.tableData);
-                    this.tableData = this.tableData.splice(1,15);
+                    this.tableData = this.tableData.splice(0,15);
                     this.currentHead = this.fenleis[list.type - 1];
                     this.isReadyType = this.list.type;
                 })
@@ -212,7 +312,7 @@
             let littleList = this.clone(this.tableData);
 
             if(this.moreShow){
-                this.tableData = littleList.splice(1,15);
+                this.tableData = littleList.splice(0,15);
             }else{
                 this.tableData = this.allList;
             }
@@ -221,8 +321,65 @@
         // 格式化列表数据  将列表第一个转化为小写
         formatData(list){
             if(!list || !list.length) return;
-
+            
             list.forEach(item => {
+                if(this.list.type == 3){
+                    item.d[2] = {
+                        value: item.d[2],
+                        type: dealData.computeRecommendSignal(item.d[2]),
+                    };
+                    item.d[3] = {
+                        value: item.d[3],
+                        type: dealData.computeADXSignal(item.d[13],item.d[14],item.d[15],item.d[16],item.d[17])
+                    };
+                    item.d[4] = {
+                        value: item.d[4],
+                        type: dealData.computeAOSignal(item.d[18],item.d[19])
+                    };
+                    item.d[6] = {
+                        value: item.d[6],
+                        type: dealData.computeCCI20Signal(item.d[20],item.d[21])
+                    };
+                    item.d[7] = {
+                        value: item.d[7],
+                        type: dealData.computeMACDSignal(item.d[7],item.d[8])
+                    };
+                    item.d[9] = {
+                        value: item.d[9],
+                        type: dealData.computeMomSignal(item.d[24],item.d[25])
+                    };
+                    item.d[10] = {
+                        value: item.d[10],
+                        type: dealData.computeRSISignal(item.d[26],item.d[27])
+                    };
+                }
+
+                if(this.list.type == 4){
+                    item.d[2] = {
+                        value: item.d[2],
+                        type: dealData.computeRecommendSignal(item.d[2]),
+                    };
+                    item.d[4] = {
+                        value: item.d[4],
+                        type: dealData.computeMASignal(item.d[4],item.d[3])
+                    };
+                    item.d[5] = {
+                        value: item.d[5],
+                        type: dealData.computeMASignal(item.d[5],item.d[3])
+                    };
+                    item.d[6] = {
+                        value: item.d[6],
+                        type: dealData.computeMASignal(item.d[6],item.d[3])
+                    };
+                    item.d[7] = {
+                        value: item.d[7],
+                        type: dealData.computeBBSellSignal(item.d[7],item.d[3])
+                    };
+                    item.d[8] = {
+                        value: item.d[8],
+                        type: dealData.computeBBBuySignal(item.d[8],item.d[3])
+                    };
+                }
                 item.d[0] = item.d[0].toLowerCase();
             })
 
@@ -233,6 +390,7 @@
         // 页面跳转
         goDetail(name){            
             this.$store.commit('common/setListName', name);
+            debugger
             this.$router.push({name:'technicals'});
         },
 

@@ -13,6 +13,20 @@ export default {
   },
 
   // 格式化时间
+  formatUnit(value){
+    
+    let newVal;
+    if(value >= 1000 && value < 1000000){
+      newVal = parseFloat((value/1000).toFixed(3)) + 'k'
+    }else if(value >= 1000000 && value < 1000000000){
+      newVal = parseFloat((value/1000000).toFixed(3)) + 'M'
+    }else if(value >= 1000000000){
+      newVal = parseFloat((value/1000000000).toFixed(3)) + 'B'
+    }
+    return newVal;
+  },
+
+  // 格式化时间
   formatTime(time, type){
     let typeFin =  type ? type : 'YYYY-MM-DD HH:mm:ss';
     return Moment(time*1000).format(typeFin);
@@ -20,7 +34,14 @@ export default {
 
   // 格式化金额
   formatMoney(money){
-    return new Number(money).toFixed(2);
+    let newVal;
+    if(money.toFixed(2) == 0.00){
+      return newVal = 0;
+    }else{
+      newVal = parseFloat(money.toFixed(2));
+    }
+    
+    return newVal;
   },
 
   // 格式化区域，暂时支持二级查询

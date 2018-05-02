@@ -37,6 +37,7 @@ export default {
     },
 
     computeADXSignal(e, t, o, r, i) {
+      
       var a = n.NEUTRAL;
       return e > 20 && r < i && t > o && (a = n.BUY), e > 20 && r > i && t < o && (a = n.SELL), a
     },
@@ -75,7 +76,7 @@ export default {
      * @param e
      * @param t
        */
-    computeRecommendSignal(e, t) {
+    computeRecommendSignal(e) {
       var t = void 0;
       return e >= -1 && e < -.5 && (t = n.STRONG_SELL), e >= -.5 && e < 0 && (t = n.SELL), 0 === e && (t = n.NEUTRAL), e > 0 && e <= .5 && (t = n.BUY), e > .5 && e <= 1 && (t = n.STRONG_BUY), t
     },
