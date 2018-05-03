@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack",
-    "dev": "node build/dev-server.js webpack-dev-server --inline --progress --host 192.168.10.109",
+    "dev": "node build/dev-server.js webpack-dev-server --inline --progress --host 192.168.0.102",
     "build": "node build/build.js"
   },
   "author": "cyzeng",

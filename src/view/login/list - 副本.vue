@@ -6,14 +6,14 @@
 
 <template>
         
-      <div class="clearfix  list_main">
+      <div class="clearfix">
           <TopbarList></TopbarList>
           <div class="result mainBox">
           
           <div class="displayNone">{{countLocalState}}</div>
           <div class="displayNone">{{AllData}}</div>
-          <div class="main1 clearfix" >
-            <table class="table table1 table-bordered table-hover text-center mg-b0"
+          <div class="main clearfix" >
+            <table class="table table-bordered table-hover text-center mg-b0"
                  :class="{'marginB-20': !tableData || !tableData.length }">
             <thead>
               <tr>

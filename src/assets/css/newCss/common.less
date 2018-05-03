@@ -1,7 +1,7 @@
 html,body{
     width:100%;
     height: 100%;
-    overflow-y: scroll;
+    overflow: hidden;
     -webkit-overflow-scrolling: touch;
 }
 
@@ -11,6 +11,32 @@ html,body{
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
 }
+
+/*移动端*/
+@media only screen and (max-width: 768px){
+    #vueRouter{
+        display: flex;
+        flex-direction: column;
+
+        .header{
+            height: 108px;
+        }
+        .list_main{
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            .headerBox{
+                height: 54px;
+            }
+            .mainBox{
+                flex: 1;
+                position: relative;
+            }
+        }
+    }
+    
+}
+
 
 .mainBox{
     // overflow-y: auto;

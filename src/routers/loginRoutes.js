@@ -19,6 +19,7 @@ const Number = r => require.ensure( [], () => r(require('@Src/view/login/persona
 const Follow = r => require.ensure( [], () => r(require('@Src/view/login/personal/Follow')), 'Follow');
 
 const demo = r => require.ensure( [], () => r(require('@Src/view/login/demo')), 'demo');
+const test = r => require.ensure( [], () => r(require('@Src/view/login/test')), 'test');
 
 export default [
   {
@@ -26,6 +27,11 @@ export default [
     name: 'index',
     component: index,
     children: [
+      {
+        path: '/test',
+        name: 'test',
+        component: test,
+      },
       {
         path: '/',
         name: 'report',
@@ -84,6 +90,7 @@ export default [
         name: 'demo',
         component: demo,
       },
+      
     ]
   },
   // {
