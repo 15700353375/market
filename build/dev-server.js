@@ -27,7 +27,7 @@ var server = new webpackDevServer(compiler,{
   proxy: {
     '/api': {
       // target: 'http://192.168.0.16:80',
-      target: "http://192.168.0.238:8003",
+      target: "http://192.168.10.109:8003",
       changeOrigin: true,
       pathRewrite: {
         '^/api': ''
@@ -36,7 +36,7 @@ var server = new webpackDevServer(compiler,{
   }
 });
 
-server.listen(9999,'localhost',function(error){
+server.listen(9999,'0.0.0.0',function(error){
   if(error){
     throw error;
   }

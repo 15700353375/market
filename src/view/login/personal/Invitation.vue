@@ -89,7 +89,7 @@
                           this.rule = res.data.rule;
                           this.invite_code = res.data.invite_code;
                   }else{
-                    this.$message.error(res.message);
+                    this.$message.error(res.msg);
                   }
             })
         },

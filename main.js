@@ -58,11 +58,18 @@ window.$ = $;
 window.Moment = moment;
 window.app = app;
 
-
+import { mapState } from 'vuex';
 
 // 路由跳转之前，检测是否有token
 router.beforeEach((to, from, next) => {
-  next()
+  
+  // if(to.path.indexOf('personal') != -1){
+  //   sessionStorage.setItem("isNavShow",true);
+  // }else{
+  //   sessionStorage.setItem("isNavShow",false);
+  // }
+
+next()
   // if (noTokenUrls.indexOf(to.path) == -1) {
   //   // 跳转需要token的路由,检测session是否有token
   //   // let token = sessionStorage.getItem("agentToken");

@@ -198,8 +198,6 @@
                     this.isVip(res.data.token)
                   }else{
                     this.$message.error(res.msg);
-                    // this.errorTip = res.message;
-                    // this.confirmError = true;
                   }
                 })
           }

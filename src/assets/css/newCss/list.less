@@ -1,7 +1,8 @@
 .mainBox{
-    width: 100%;
-    overflow: hidden;
-    overflow-x: auto;
+    // width: 100%;
+    -webkit-overflow-scrolling: touch;
+    // overflow: hidden;
+    // overflow-x: auto;
   }
   .main{
     /*width: 90%;*/
@@ -9,7 +10,8 @@
     margin: 0 auto;
     margin-top: 50px;
     min-width: 1180px;
-    margin-bottom: 100px;
+    margin-bottom: 10px;
+    -webkit-overflow-scrolling: touch;
     /*overflow: hidden;*/
     /*overflow-x: auto;*/
     table{
@@ -24,6 +26,7 @@
 
   .table > thead:first-child > tr:first-child > th{
     background: rgba(245, 247, 250, 0.83)!important;
+    font-size:13px;
   }
 
   .table > tbody > tr > td{

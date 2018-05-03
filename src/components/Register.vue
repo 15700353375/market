@@ -123,8 +123,6 @@
 
         <div class="vee-form-grop text-right">
           <button class="btn btn-default submit"
-                  :class="{'loading':btn.loading}"
-                  :disabled="btn.loading"
                   type="submit">注册
           </button>
         </div>
@@ -204,13 +202,13 @@
             this.validateDisabled = true;
             let timesRun = setInterval(() => {
               if(this.reciprocalNum > 0){
-                this.validateText = `重新获取(${this.reciprocalNum}s)`
+                this.validateText = `(${this.reciprocalNum}s)`
                 this.reciprocalNum--;
               }else{
                 this.reciprocalNum = 59;
                 clearInterval(timesRun);
                  this.validateDisabled = false;
-                 this.validateText = '重新获取(60s)';
+                 this.validateText = '重新获取';
               }
             },1000);
             let params = {
@@ -218,6 +216,18 @@
             };
             // debugger
             this.$ajaxQsPost('http://bitcoin.xxw360.com/sms', params)
+              .then((res)=>{                  
+                if( res && res.code == 200){
+                    this.$message.success(res.msg);                     
+                }else{
+                  this.$message.error(res.msg);
+
+                  this.reciprocalNum = 59;
+                  clearInterval(timesRun);
+                  this.validateDisabled = false;
+                  this.validateText = '重新获取';
+                }
+              })
           }
         });
       },
@@ -239,16 +249,22 @@
                 .then((res)=>{
                   
                   if( res && res.code == 200){
-                    this.$message.success(res.msg);
-                    this.$emit('closeModel', true);
+                    if(res.code == 200){
+                      this.$message.success('注册成功，请登录！');
+                      this.$emit('closeModel', true);
+                    }else{
+                      this.$message.error(res.msg);
+                    }
                   }else{
+                    this.$message.error(res.msg);
                     this.errorTip = res.message;
                     this.confirmError = true;
                   }
                 })
           }
         });
-      }
+      },
+      
     },
     components: {
     }

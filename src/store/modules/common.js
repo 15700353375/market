@@ -17,6 +17,8 @@ const state = {
   chartsData1: {},
   chartsData2: {},
   chartsData3: {},
+
+  isNavShow: false,
 };
 
 const getters = {};
@@ -55,6 +57,12 @@ const mutations = {
   setChartsData3(state,chartsData3) {    
     // 变更状态
     state.chartsData3 = chartsData3;
+  },
+  // 设置nav是否显示
+  setIsNavShow(state,isNavShow) {    
+    
+    // 变更状态
+    state.isNavShow = sessionStorage.getItem("isNavShow");
   },
 };
 

@@ -16,7 +16,9 @@
             {{userInfo.mobile}}
             <span v-if="userInfo.is_vip == '0'" style="margin-left:20px;color: orange">您还不是会员</span>
         </p>
-
+        <p><span>到期时间：</span>
+            {{comUtil.formatTime(userInfo.expired_time)}}
+        </p>
         <div>{{userInfo.rule}}</div>
     </div>
 </div>
@@ -27,11 +29,12 @@
   //加载相关依赖
   import { mapState } from 'vuex';
   import LoginVue from '@Components/LoginVue';
+import comUtil from '@Util/comUtil';
   export default {
     props: ['navData'],
     data() {
       return {
-
+          comUtil: comUtil,
 
           userInfo: {},
       }
@@ -57,7 +60,8 @@
                         this.userInfo = res.data;
                      
                   }else{
-                    this.$message.error(res.message);
+                      
+                    this.$message.error(res.msg);
                   }
             })
         },

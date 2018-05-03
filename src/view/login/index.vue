@@ -5,7 +5,7 @@
  -->
 
 <template>
-  <div id="vueRouter">
+  <div id="vueRouter" class="clearfix">
   <!--   <alert type="success" >
       <p>You successfully read this important alert message.</p>
     </alert>

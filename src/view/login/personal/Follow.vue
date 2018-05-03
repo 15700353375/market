@@ -85,7 +85,7 @@
                           this.list = res.data
                       }                      
                   }else{
-                    this.$message.error(res.message);
+                    this.$message.error(res.msg);
                   }
                 })
         },
@@ -101,7 +101,7 @@
                   if( res && res.code == 200){
                       this.$message.success(res.code);                  
                   }else{
-                    this.$message.error(res.message);
+                    this.$message.error(res.msg);
                   }
                 })
 

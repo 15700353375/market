@@ -8,97 +8,60 @@
 
 <div class="top_nav">
     <nav class="navbar navbar-inverse navbar-static-top" style=" background:transparent;width:50px;">
-    <div class="container">
-        <div class="navbar-header" style="background:transparent;">
-        <button type="button" class="navbar-toggle collapsed pull-left" data-toggle="offcanvas">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <!-- <a class="navbar-brand" href="#"></a> -->
+        <div class="container">
+            <div class="navbar-header" style="background:transparent;">
+                <button type="button" class="navbar-toggle collapsed pull-left" data-toggle="offcanvas">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div id="navbar" style="top:0px;" class="collapse navbar-collapse sidebar-offcanvas">
+                <div class="sider left" style="margin-top:50px;">
+                    <dl>
+                        <dt>
+                            <i class="i1 cur"></i>用户中心
+                        </dt>
+                        <dd>
+                            <!-- <p><a router-link :to="'/personal/basic'">基本信息</a></p> -->
+                            <p><router-link  to="/personal/basic" active-class="active">基本信息</router-link></p>
+                            
+                        </dd>
+                        <dd>
+                            <!-- <p><a router-link :to="'/personal/member'">开通会员</a></p> -->
+                            <p><router-link  to="/personal/member" active-class="active">开通会员</router-link></p>
+                        </dd>
+                        <dd>
+                            <p><router-link  to="/personal/modifyPassword" active-class="active">修改密码</router-link></p>
+                            <!-- <p><a href="pwd.html">修改密码</a></p> -->
+                        </dd>
+                        <dt>
+                            <i class="i3 cur"></i>邀请有礼
+                        </dt>
+                        <dd>
+                            <!-- <p><a href="invite.html">立即邀请</a></p> -->
+                            <p><router-link  to="/personal/invitation" active-class="active">立即邀请</router-link></p>
+                        </dd>
+                        <dd>
+                            <!-- <p><a href="friend.html">邀请好友数:</a></p> -->
+                            <p><router-link  to="/personal/number" active-class="active">邀请好友数</router-link></p>
+                        </dd>        
+                        <dt>
+                            <i class="i3 cur"></i>关注列表
+                        </dt>
+                        <dd>
+                            <!-- <p><a href="follow.html">关注列表</a> </p> -->
+                            <p><router-link  to="/personal/follow" active-class="active">关注列表</router-link></p>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
         </div>
-        <div id="navbar" style="top:0px;" class="collapse navbar-collapse sidebar-offcanvas">
-        <div class="sider left" style="margin-top:50px;">
-        <dl>
-            <dt>
-                <i class="i1 cur"></i>用户中心
-            </dt>
-            <dd>
-                <!-- <p><a router-link :to="'/personal/basic'">基本信息</a></p> -->
-                <p><router-link  to="/personal/basic" active-class="active">基本信息</router-link></p>
-                
-            </dd>
-            <dd>
-                <!-- <p><a router-link :to="'/personal/member'">开通会员</a></p> -->
-                <p><router-link  to="/personal/member" active-class="active">开通会员</router-link></p>
-            </dd>
-            <dd>
-                <p><router-link  to="/personal/modifyPassword" active-class="active">修改密码</router-link></p>
-                <!-- <p><a href="pwd.html">修改密码</a></p> -->
-            </dd>
-            <dt>
-                <i class="i3 cur"></i>邀请有礼
-            </dt>
-            <dd>
-                <!-- <p><a href="invite.html">立即邀请</a></p> -->
-                <p><router-link  to="/personal/invitation" active-class="active">立即邀请</router-link></p>
-            </dd>
-            <dd>
-                <!-- <p><a href="friend.html">邀请好友数:</a></p> -->
-                <p><router-link  to="/personal/number" active-class="active">邀请好友数</router-link></p>
-            </dd>        
-            <dt>
-                <i class="i3 cur"></i>关注列表
-            </dt>
-            <dd>
-                <!-- <p><a href="follow.html">关注列表</a> </p> -->
-                <p><router-link  to="/personal/follow" active-class="active">关注列表</router-link></p>
-            </dd>
-        </dl>
-    </div>
-        </div><!--/.nav-collapse -->
-    </div>
     </nav>
 
-    <div class="sider left bigScreen">
-    <dl>
-        <dt>
-            <i class="i1 cur"></i>用户中心
-        </dt>
-        <dd>
-            <!-- <p><a router-link :to="'/personal/basic'">基本信息</a></p> -->
-            <p><router-link  to="/personal/basic" active-class="active">基本信息</router-link></p>
-            
-        </dd>
-        <dd>
-            <!-- <p><a router-link :to="'/personal/member'">开通会员</a></p> -->
-            <p><router-link  to="/personal/member" active-class="active">开通会员</router-link></p>
-        </dd>
-        <dd>
-            <p><router-link  to="/personal/modifyPassword" active-class="active">修改密码</router-link></p>
-            <!-- <p><a href="pwd.html">修改密码</a></p> -->
-        </dd>
-        <dt>
-            <i class="i3 cur"></i>邀请有礼
-        </dt>
-        <dd>
-            <!-- <p><a href="invite.html">立即邀请</a></p> -->
-            <p><router-link  to="/personal/invitation" active-class="active">立即邀请</router-link></p>
-        </dd>
-        <dd>
-            <!-- <p><a href="friend.html">邀请好友数:</a></p> -->
-            <p><router-link  to="/personal/number" active-class="active">邀请好友数</router-link></p>
-        </dd>        
-        <dt>
-            <i class="i3 cur"></i>关注列表
-        </dt>
-        <dd>
-            <!-- <p><a href="follow.html">关注列表</a> </p> -->
-            <p><router-link  to="/personal/follow" active-class="active">关注列表</router-link></p>
-        </dd>
-    </dl>
-</div>
+
+
 </div>
 
 </template>
@@ -115,14 +78,26 @@
       return {
 
 
-
       }
     },
-    mounted(){
-
+    created(){
+        // window.location.reload();
+        
+        
     },
-    computed: mapState({
+    mounted(){
+        if(this.$route.path.indexOf('personal') != -1){
+            this.$store.commit('common/setIsNavShow', true);
+        }else{
+            this.$store.commit('common/setIsNavShow', false);
+        }
+        console.log(this.isNavShow)
+        
+    },
 
+    computed: mapState({
+      // 面包屑
+      isNavShow: state => state.common.isNavShow,
 
     }),
     methods: {

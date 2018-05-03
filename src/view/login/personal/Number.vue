@@ -10,9 +10,12 @@
     <div class="ctit">
         <em>邀请好友数</em>
     </div>
-    <div class="quota clear">
-        您成功邀请到了1位币友<br>
-        再邀请4位币友即可免费使用7天哦~
+    <div class="quota clear" style="line-height:25px;">
+        您成功邀请到了<span>{{point}}</span>位币友<br>
+        再邀请<span>{{differ}}</span>位币友即可免费使用{{invite_day}}天哦~ <br>
+        已用积分数： <span>{{used_point}}</span> <br>
+        可用积分数： <span>{{available_point}}</span>  
+        <button v-if="differ <= 0" class="btn btn-default ch_btn_green mg_l20" @click='updata' style="padding:4px 12px;height:30px;">兑换</button>
     </div>
     <div class="ctxtl ctxtm clear">
 
@@ -52,7 +55,16 @@
       return {
 
           list: [],
-
+        //   可用积分
+          available_point: 0,
+          	// 差多少积分
+          differ: 1,
+        //   兑换VIP需要划分的积分
+          invite_point: 0,
+        //   可兑换VIP天数
+            invite_day: 0,
+            point: 0,
+            used_point: 0,
       }
     },
     mounted(){
@@ -72,12 +84,33 @@
             this.$ajaxGet('http://bitcoin.xxw360.com/inviteList', params)
                 .then((res)=>{
                   if( res && res.code == 200){
-                    this.list = res.data.list
+                    this.list = res.data.list;
+                    this.available_point = res.data.available_point;
+                    this.differ = res.data.differ;
+                    this.invite_point = res.data.invite_point;
+                    this.invite_day = res.data.invite_day;
+                    this.used_point = res.data.used_point;
+                    this.point = res.data.point;
+
                   }else{
-                    this.$message.error(res.message);
+                    this.$message.error(res.msg);
                   }
             })
         },
+
+        updata(){            
+            let parmas = {
+                token: this.user.token
+            };
+            this.$ajaxQsPost('http://bitcoin.xxw360.com/exchange', parmas)
+                .then((res)=>{                  
+                  if( res && res.code == 200){
+                    this.$message.success(res.msg);
+                  }else{
+                    this.$message.error(res.msg);
+                  }
+            })
+        }
 
 
     },

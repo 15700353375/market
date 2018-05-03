@@ -6,13 +6,13 @@
 
 <template>
         
-      <div>
+      <div class="clearfix">
           <TopbarList></TopbarList>
           <div class="result mainBox">
           
           <div class="displayNone">{{countLocalState}}</div>
           <div class="displayNone">{{AllData}}</div>
-          <div class="main">
+          <div class="main clearfix" >
             <table class="table table-bordered table-hover text-center mg-b0"
                  :class="{'marginB-20': !tableData || !tableData.length }">
             <thead>
@@ -176,9 +176,10 @@
                 <td colspan="13">暂无数据</td>
               </tr>
             </tbody>
-          </table>
-          <div class="more" @click="more" > 了解更多</div>
+          </table>          
           </div>
+
+          
 
           <!-- <div v-if="tableData.length"
                class="paginationDiv">
@@ -189,6 +190,7 @@
           </div> -->
       
       </div>
+      <div class="more" @click="more" > 了解更多</div>
       </div>
 
 </template>
@@ -277,7 +279,8 @@ export default {
                 // console.log(this.list.type)
 
                 this.user = state.login.userInfo;
-            }
+            },
+            token: state => state.login.userInfo.token,
         }),
 
          //计算属性，任意数据改变，更改表格数据tableData
@@ -422,7 +425,11 @@ export default {
 
 
         // 页面跳转
-        goDetail(name){            
+        goDetail(name){         
+            if(!this.token){
+                this.$message.warning('请先登录！');
+                return
+            }   
             this.$store.commit('common/setListName', name);            
             this.$router.push({name:'technicals'});
         },

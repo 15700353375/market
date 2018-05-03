@@ -72,7 +72,7 @@
                         this.userInfo = res.data;
                      
                   }else{
-                    this.$message.error(res.message);
+                    this.$message.error(res.msg);
                   }
             })
         },

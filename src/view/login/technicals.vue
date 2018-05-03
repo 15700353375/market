@@ -271,6 +271,11 @@ import LittleCharts from '@Components/LittleCharts';
         },
 
         follow(){
+
+            if(!this.user.token){
+                this.$message.warning('登录之后才能关注！')
+                return
+            }
             let parmas = {
                 name: 'HTTP',
                 token: this.user.token
