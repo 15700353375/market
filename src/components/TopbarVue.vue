@@ -9,7 +9,7 @@
   <div class="displayNone">{{keywordChange}}</div>
   <div class="headerBox">
     <div class="headerTop clearFloat">
-      <img @click='goindex' src="/agentStatic/img/logopc.png" alt="" class="logo fl">
+      <img @click='goindex' src="/agentStatic/img/logo3.png" alt="" class="logo fl">
       <div class="sousuoBox clearFloat">
         <span class="shangpin fl sousuodisplay">商品代码</span>
         <input type="text" placeholder="搜索" class="sousuo fr sousuodisplay" v-model="keywords" @change="change">
@@ -21,11 +21,11 @@
           <span v-else class="sign" @click='login'>登录</span>
           <span v-if="!username" class="register" @click='register'>免费注册</span>
         </div>
-        <div class="yidenglu">
+        <!-- <div class="yidenglu"> -->
           <!-- <router-link :to="{name:'HelloWorld'}" tag="span">欢迎瓜子可可</router-link> -->
-          <span></span>
-          <span v-if="username" @click="logout">退出！</span>
-        </div>
+          <!-- <span></span> -->
+          <!-- <span v-if="username" @click="logout">退出！</span> -->
+        <!-- </div> -->
       </div>
 
 

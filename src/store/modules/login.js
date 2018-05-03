@@ -1,5 +1,6 @@
 const state = {
-  userInfo: {}
+  userInfo: {},
+  isVip: false,
 };
 
 const getters = {};
@@ -10,6 +11,12 @@ const mutations = {
     // 变更状态
     state.userInfo = userInfo;
   },
+  setIsVip (state,isVip) {    
+    // 变更状态
+    state.isVip = isVip;
+  },
+
+  
 };
 
 

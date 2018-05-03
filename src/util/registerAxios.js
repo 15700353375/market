@@ -75,19 +75,15 @@ let post = function(url, params, btn){
     
     return axios.post(url, requestData)
                 .then( (res) => {
-                  if(res.code == 433){
+                  if(res.data.code == 403){
                     this.$store.commit('login/setUserInfo', {});
-                  }
-                  
-                  if(btn){
-                    btn.loading = false;
+                    this.$message.warning('登录超时！');
+                    this.$router.push({name:'report'});
                   }
                   return resolveSuccessRes(res);
                 }).catch((error)=>{
-                  if(btn){
-                    btn.loading = false;
-                  }
-                  resolveFailRes(error.response.status);
+                  
+                  this.$message.error('网络错误，请稍后重试');
                 })
 
   // }else{
@@ -100,16 +96,14 @@ let qsPost = function(url, params, btn){
   let requestData = params ? qs.stringify(params) : {};
     return axios.post(url, requestData)
                 .then( (res) => {
-                  
-                  if(btn){
-                    btn.loading = false;
+                  if(res.data.code == 403){
+                    this.$store.commit('login/setUserInfo', {});
+                    this.$message.warning('登录超时！');
+                    this.$router.push({name:'report'});
                   }
                   return resolveSuccessRes(res);
                 }).catch((error)=>{
-                  if(btn){
-                    btn.loading = false;
-                  }
-                  resolveFailRes(error.response.status);
+                  this.$message.error('网络错误，请稍后重试');
                 })
 
 }
@@ -122,15 +116,15 @@ let get = function(url, params, btn){
   // if(validatePower(url)){
     return axios.get(url, {params: requestData})
                 .then( (res) => {
-                  if(btn){
-                    btn.loading = false;
+                  
+                  if(res.data.code == 403){
+                    this.$store.commit('login/setUserInfo', {});
+                    this.$message.warning('登录超时！')
+                    this.$router.push({name:'report'});
                   }
                   return resolveSuccessRes(res);
                 }).catch((error)=>{
-                  if(btn){
-                    btn.loading = false;
-                  }
-                  resolveFailRes(error.response.status);
+                  this.$message.error('网络错误，请稍后重试');
                 })
   // }else{
   //   // 权限不足，跳转至登录页面

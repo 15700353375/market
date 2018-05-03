@@ -195,7 +195,7 @@
                   if( res && res.code == 200){
                     this.$message.success(res.msg);
                     this.$store.commit('login/setUserInfo', res.data);
-                    this.close()
+                    this.isVip(res.data.token)
                   }else{
                     this.$message.error(res.msg);
                     // this.errorTip = res.message;
@@ -204,6 +204,22 @@
                 })
           }
         });
+      },
+
+      // 判断是否为vip
+      isVip(token){
+        let parmas = {
+          token: token
+        }
+        this.$ajaxQsPost('http://bitcoin.xxw360.com/isVip', parmas)
+              .then((res)=>{                  
+                if( res && res.code == 200){
+                  this.$store.commit('login/setIsVip', res.msg);
+                  this.close()
+                }else{
+                  this.$message.error(res.msg);
+                }
+        })
       },
 
 

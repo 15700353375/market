@@ -10,8 +10,8 @@
       <div class="left fl">
         <span :class="[idx == 1 ? 'border':'']" @click="nav" :data-hi ="1">概览</span>
         <span :class="[idx == 2 ? 'border':'']" @click="nav" :data-hi ="2">表现</span>
-        <span :class="[idx == 3 ? 'border':'']" @click="nav" :data-hi ="3">震荡指标</span>
-        <span :class="[idx == 4 ? 'border':'']" @click="nav" :data-hi ="4">跟随趋势</span>
+        <span :class="[idx == 3 ? 'border':'']" @click="checkNav" :data-hi ="3">震荡指标</span>
+        <span :class="[idx == 4 ? 'border':'']" @click="checkNav" :data-hi ="4">跟随趋势</span>
       </div>
       <div class="right fr">
           <div class="item">USD</div>
@@ -44,23 +44,33 @@
         },
         keywords: '',
         idx: 1,
+        _idx: 1,
         yuan: true,
       }
     },
-    mounted(){
-      this.$store.commit('common/setKeywords', '');
+    created(){
       this.$store.commit('common/setlistStatus', 1);
+    },
+    mounted(){
+      console.log(this.listStatus)
+      // debugger
+      this.$store.commit('common/setKeywords', '');
+      
       this.$store.commit('common/setRight', 'USD$');
     },
     computed: mapState({
       // 名字
       username: state => state.login.userInfo.username,
+      
+      token: state => state.login.userInfo.token,
+      isVip: state => state.login.isVip,
 
       // 代理商ID
       agentCode: state => state.login.userInfo.agent_code,
 
       // 面包屑
       bread: state => state.common.bread,
+      listStatus: state => state.common.listStatus,
 
       keywordChange(){
         // let keywords = this.keywords;
@@ -79,6 +89,42 @@
         this.$store.commit('common/setlistStatus', this.idx);
 
         this.$router.push({name:'report'});
+      },
+
+      checkNav(e){
+        if(this.token){
+          this._idx = e.target.dataset.hi
+          if(this.isVip == 'true'){
+            this.idx = this._idx;
+            this.$store.commit('common/setlistStatus', this.idx);
+          }else{
+            this._isVip(this.token);
+          }          
+          
+        }else{
+          this.$message.warning('请先登录！');
+        }
+      },
+
+      // 判断是否为vip
+      _isVip(token){
+        let parmas = {
+          token: token
+        }
+        this.$ajaxQsPost('http://bitcoin.xxw360.com/isVip', parmas)
+              .then((res)=>{                  
+                if( res && res.code == 200){
+                  if(res.msg == 'true'){
+                    this.$store.commit('login/setIsVip', res.msg);
+                    this.idx = this._idx;
+                    this.$store.commit('common/setlistStatus', this.idx);
+                  }else{
+                    this.$message.warning('您不是会员！');
+                  }
+                }else{
+                  this.$message.warning('您不是会员！');
+                }
+        })
       },
 
       change(e){
